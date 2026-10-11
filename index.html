@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LifeWise</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #101a2b;
+      color: white;
+      padding: 30px 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    textarea {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 14px;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 12px;
+      padding: 14px 22px;
+      background: #f29b38;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+    #answer {
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <h1>LifeWise</h1>
+  <p>Your everyday problem-solving assistant.</p>
+
+  <textarea id="question" rows="5"
+    placeholder="What can I help you solve?"></textarea>
+  <br>
+  <button onclick="askLifeWise()">Ask LifeWise</button>
+
+  <h3>Your answer</h3>
+  <p id="answer"></p>
+
+  <script>
+    async function askLifeWise() {
+      const question = document.getElementById("question").value.trim();
+      const answer = document.getElementById("answer");
+
+      if (!question) {
+        answer.textContent = "Please enter a question first.";
+        return;
+      }
+
+      answer.textContent = "Thinking...";
+
+      try {
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: question })
+        });
+
+        const data = await response.json();
+        answer.textContent = data.answer || data.error || "Please try again.";
+      } catch (error) {
+        answer.textContent = "LifeWise is not connected to its server yet.";
+      }
+    }
+  </script>
+</body>
+</html>
