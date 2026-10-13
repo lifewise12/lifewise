@@ -1,0 +1,707 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101b30">
+  <meta name="description" content="LifeWise — Your everyday problem-solving assistant.">
+  <title>LifeWise | Your Everyday Problem Solver</title>
+
+  <style>
+    :root {
+      --navy: #101b30;
+      --navy-light: #1d304d;
+      --orange: #f47721;
+      --background: #f4f6fa;
+      --text: #172033;
+      --muted: #697386;
+      --border: #e1e6ee;
+      --white: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--background);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    button, input, textarea, select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    header {
+      background: var(--navy);
+      color: white;
+      padding: 18px 22px;
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      font-size: 29px;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .brand span {
+      color: var(--orange);
+    }
+
+    .tagline {
+      font-size: 12px;
+      color: #cbd5e1;
+    }
+
+    .header-button {
+      color: white;
+      background: transparent;
+      border: 1px solid #53617a;
+      border-radius: 9px;
+      padding: 9px 14px;
+    }
+
+    main {
+      max-width: 1100px;
+      padding: 26px 18px 60px;
+      margin: auto;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #101b30, #304d70);
+      color: white;
+      padding: 38px 28px;
+      border-radius: 20px;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      font-size: clamp(30px, 5vw, 45px);
+      line-height: 1.15;
+      letter-spacing: -1px;
+      margin: 0 0 14px;
+    }
+
+    .hero p {
+      color: #dce5f0;
+      max-width: 650px;
+      margin: 0 0 22px;
+    }
+
+    .primary-button {
+      background: var(--orange);
+      color: white;
+      border: 0;
+      border-radius: 10px;
+      padding: 13px 19px;
+      font-weight: 700;
+    }
+
+    .primary-button:hover {
+      background: #df6415;
+    }
+
+    .section-title {
+      font-size: 24px;
+      margin: 30px 0 6px;
+    }
+
+    .section-description {
+      color: var(--muted);
+      margin: 0 0 18px;
+    }
+
+    .categories {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .category {
+      text-align: left;
+      background: white;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 20px;
+      min-height: 150px;
+      transition: transform .15s, border-color .15s;
+    }
+
+    .category:hover {
+      transform: translateY(-3px);
+      border-color: var(--orange);
+    }
+
+    .emoji {
+      font-size: 29px;
+      display: block;
+      margin-bottom: 9px;
+    }
+
+    .category strong {
+      display: block;
+      font-size: 17px;
+      margin-bottom: 5px;
+    }
+
+    .category small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 24px;
+      margin-top: 25px;
+    }
+
+    .panel h2 {
+      font-size: 23px;
+      margin: 0 0 6px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin: 17px 0 7px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid #ccd4e0;
+      border-radius: 10px;
+      padding: 13px;
+      background: white;
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: 2px solid #f9b17e;
+      border-color: var(--orange);
+    }
+
+    .full-button {
+      width: 100%;
+      margin-top: 16px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .response {
+      background: #f7f9fc;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 18px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .response h3 {
+      margin-top: 0;
+    }
+
+    .history-item {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
+      margin-top: 12px;
+    }
+
+    .history-item strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .history-item p {
+      margin: 5px 0;
+      overflow-wrap: anywhere;
+    }
+
+    .secondary-button {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 9px 13px;
+      margin-top: 8px;
+      color: var(--text);
+    }
+
+    .status {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 12px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px 18px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 760px) {
+      .categories {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .hero {
+        padding: 29px 21px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .categories {
+        grid-template-columns: 1fr;
+      }
+
+      .category {
+        min-height: auto;
+      }
+
+      .panel {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-inner">
+      <div>
+        <div class="brand">Life<span>Wise</span></div>
+        <div class="tagline">Your everyday problem-solving assistant</div>
+      </div>
+      <button class="header-button" id="historyButton">
+        My LifeWise Portfolio
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Life gets complicated.<br>Let's figure it out together.</h1>
+      <p>
+        Get help with everyday decisions, finances, home projects,
+        planning, and life's unexpected problems. Keep your advice
+        organized so you can return to it whenever you need it.
+      </p>
+      <button class="primary-button" id="startButton">
+        Get Started
+      </button>
+    </section>
+
+    <section id="homeSection">
+      <h2 class="section-title">What can we help you with?</h2>
+      <p class="section-description">
+        Choose a category or describe whatever is on your mind.
+      </p>
+
+      <div class="categories">
+        <button class="category" data-category="Everyday Problems">
+          <span class="emoji">💡</span>
+          <strong>Everyday Problems</strong>
+          <small>Think through challenges and find practical solutions.</small>
+        </button>
+
+        <button class="category" data-category="Money and Budgeting">
+          <span class="emoji">💰</span>
+          <strong>Money and Budgeting</strong>
+          <small>Organize expenses, plan purchases, and explore options.</small>
+        </button>
+
+        <button class="category" data-category="Home and DIY">
+          <span class="emoji">🏠</span>
+          <strong>Home and DIY</strong>
+          <small>Work through repairs, projects, and home improvements.</small>
+        </button>
+
+        <button class="category" data-category="Shopping and Decisions">
+          <span class="emoji">🛒</span>
+          <strong>Shopping and Decisions</strong>
+          <small>Compare choices and make informed decisions.</small>
+        </button>
+
+        <button class="category" data-category="Work and Career">
+          <span class="emoji">💼</span>
+          <strong>Work and Career</strong>
+          <small>Prepare for conversations, organize tasks, and plan ahead.</small>
+        </button>
+
+        <button class="category" data-category="Planning and Goals">
+          <span class="emoji">🎯</span>
+          <strong>Planning and Goals</strong>
+          <small>Break big goals into manageable next steps.</small>
+        </button>
+      </div>
+    </section>
+
+    <section class="panel" id="assistantSection">
+      <h2>Talk to LifeWise</h2>
+      <p class="muted">
+        Tell us what's happening. We'll help you work through it.
+      </p>
+
+      <label for="categorySelect">What are we working on?</label>
+      <select id="categorySelect">
+        <option>Everyday Problems</option>
+        <option>Money and Budgeting</option>
+        <option>Home and DIY</option>
+        <option>Shopping and Decisions</option>
+        <option>Work and Career</option>
+        <option>Planning and Goals</option>
+        <option>Other</option>
+      </select>
+
+      <label for="questionInput">What's on your mind?</label>
+      <textarea
+        id="questionInput"
+        placeholder="Explain your situation, ask a question, or tell us what you're trying to accomplish..."
+      ></textarea>
+
+      <label for="goalInput">What would you like to accomplish? (Optional)</label>
+      <input
+        id="goalInput"
+        type="text"
+        placeholder="Example: Save money, fix a problem, make a decision..."
+      >
+
+      <button class="primary-button full-button" id="askButton">
+        Ask LifeWise
+      </button>
+
+      <p class="status" id="assistantStatus" role="status">
+        Ready when you are.
+      </p>
+
+      <div class="response hidden" id="answerBox" aria-live="polite"></div>
+    </section>
+
+    <section class="panel" id="portfolioSection">
+      <h2>My LifeWise Portfolio</h2>
+      <p class="muted">
+        Keep a personal record of your questions, advice, and plans.
+        Your saved entries appear here on this device.
+      </p>
+
+      <div id="historyList">
+        <p class="muted">Your saved conversations will appear here.</p>
+      </div>
+
+      <button class="secondary-button" id="exportButton">
+        Export My Portfolio
+      </button>
+
+      <button class="secondary-button" id="clearButton">
+        Clear Saved Portfolio
+      </button>
+
+      <p class="status" id="portfolioStatus"></p>
+    </section>
+  </main>
+
+  <footer>
+    <strong>LifeWise</strong> — Your everyday problem-solving assistant.
+    <br>
+    LifeWise provides general information and is not a substitute for
+    qualified professional advice when needed.
+  </footer>
+
+  <script>
+    "use strict";
+
+    const $ = (id) => document.getElementById(id);
+
+    const STORAGE_KEY = "lifewise_portfolio_v1";
+
+    let currentAnswer = "";
+
+    function getPortfolio() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        const parsed = saved ? JSON.parse(saved) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function savePortfolio(entries) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+        return true;
+      } catch (error) {
+        $("portfolioStatus").textContent =
+          "Unable to save. Your browser storage may be unavailable or full.";
+        return false;
+      }
+    }
+
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, function (character) {
+        const entities = {
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#039;"
+        };
+
+        return entities[character];
+      });
+    }
+
+    function renderPortfolio() {
+      const entries = getPortfolio();
+      const list = $("historyList");
+
+      if (entries.length === 0) {
+        list.innerHTML =
+          '<p class="muted">No saved conversations yet. Ask LifeWise a question to get started.</p>';
+        return;
+      }
+
+      list.innerHTML = entries.map(function (entry, index) {
+        return `
+          <article class="history-item">
+            <strong>${escapeHTML(entry.category)}</strong>
+            <p>${escapeHTML(entry.question)}</p>
+            <p class="muted">${escapeHTML(entry.date)}</p>
+            <details>
+              <summary>View advice and notes</summary>
+              <p>${escapeHTML(entry.answer || "No answer saved.")}</p>
+              ${
+                entry.goal
+                  ? `<p><strong>Goal:</strong> ${escapeHTML(entry.goal)}</p>`
+                  : ""
+              }
+            </details>
+            <button class="secondary-button" data-delete="${index}">
+              Delete Entry
+            </button>
+          </article>
+        `;
+      }).join("");
+
+      list.querySelectorAll("[data-delete]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          const index = Number(button.dataset.delete);
+          const updated = getPortfolio();
+          updated.splice(index, 1);
+
+          if (savePortfolio(updated)) {
+            renderPortfolio();
+            $("portfolioStatus").textContent = "Entry deleted.";
+          }
+        });
+      });
+    }
+
+    function chooseCategory(category) {
+      $("categorySelect").value = category;
+      $("assistantSection").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+      $("questionInput").focus({ preventScroll: true });
+    }
+
+    document.querySelectorAll("[data-category]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        chooseCategory(button.dataset.category);
+      });
+    });
+
+    $("startButton").addEventListener("click", function () {
+      $("assistantSection").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+      $("questionInput").focus({ preventScroll: true });
+    });
+
+    $("historyButton").addEventListener("click", function () {
+      $("portfolioSection").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+      renderPortfolio();
+    });
+
+    $("askButton").addEventListener("click", async function () {
+      const category = $("categorySelect").value;
+      const question = $("questionInput").value.trim();
+      const goal = $("goalInput").value.trim();
+      const status = $("assistantStatus");
+      const answerBox = $("answerBox");
+      const askButton = $("askButton");
+
+      if (!question) {
+        status.textContent = "Please enter a question first.";
+        $("questionInput").focus();
+        return;
+      }
+
+      askButton.disabled = true;
+      askButton.textContent = "Working...";
+      status.textContent = "LifeWise is processing your question...";
+      answerBox.classList.add("hidden");
+
+      try {
+        /*
+          This request expects a backend endpoint at /api/chat.
+          The server must accept JSON containing category, question,
+          and goal, and return JSON containing an answer field.
+        */
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            category: category,
+            question: question,
+            goal: goal
+          })
+        });
+
+        const data = await response.json().catch(function () {
+          return {};
+        });
+
+        if (!response.ok) {
+          throw new Error(
+            data.error ||
+            "The LifeWise server could not process your request."
+          );
+        }
+
+        if (!data.answer || typeof data.answer !== "string") {
+          throw new Error(
+            "The server did not return an answer. Please check the backend."
+          );
+        }
+
+        currentAnswer = data.answer;
+
+        answerBox.innerHTML =
+          "<h3>Your LifeWise Advice</h3><p>" +
+          escapeHTML(currentAnswer) +
+          "</p>";
+
+        answerBox.classList.remove("hidden");
+
+        const entries = getPortfolio();
+
+        entries.unshift({
+          category: category,
+          question: question,
+          goal: goal,
+          answer: currentAnswer,
+          date: new Date().toLocaleString()
+        });
+
+        if (savePortfolio(entries)) {
+          renderPortfolio();
+          status.textContent = "Your answer is ready and saved to your portfolio.";
+        } else {
+          status.textContent =
+            "Your answer is ready, but the portfolio could not be saved.";
+        }
+
+      } catch (error) {
+        status.textContent = error.message ||
+          "Something went wrong. Please try again.";
+
+        answerBox.innerHTML =
+          "<h3>Connection Issue</h3><p>" +
+          escapeHTML(status.textContent) +
+          "</p><p>Make sure your backend server is running and the /api/chat endpoint is configured.</p>";
+
+        answerBox.classList.remove("hidden");
+
+      } finally {
+        askButton.disabled = false;
+        askButton.textContent = "Ask LifeWise";
+      }
+    });
+
+    $("exportButton").addEventListener("click", function () {
+      const entries = getPortfolio();
+
+      if (entries.length === 0) {
+        $("portfolioStatus").textContent =
+          "There is nothing to export yet.";
+        return;
+      }
+
+      const file = new Blob(
+        [JSON.stringify(entries, null, 2)],
+        { type: "application/json" }
+      );
+
+      const url = URL.createObjectURL(file);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = "lifewise-portfolio.json";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+
+      $("portfolioStatus").textContent =
+        "Your portfolio export has been prepared.";
+    });
+
+    $("clearButton").addEventListener("click", function () {
+      if (!window.confirm(
+        "Are you sure you want to permanently clear your saved LifeWise portfolio on this device?"
+      )) {
+        return;
+      }
+
+      if (savePortfolio([])) {
+        renderPortfolio();
+        $("portfolioStatus").textContent = "Your saved portfolio was cleared.";
+      }
+    });
+
+    renderPortfolio();
+  </script>
+</body>
+</html>
