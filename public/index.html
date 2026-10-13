@@ -2,638 +2,693 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#101b30">
-  <meta name="description" content="LifeWise — Your everyday problem-solving assistant.">
-  <title>LifeWise | Your Everyday Problem Solver</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LifeWise | Your Everyday Assistant</title>
 
-  <style>
-    :root {
-      --navy: #101b30;
-      --orange: #f47721;
-      --background: #f4f6fa;
-      --text: #172033;
-      --muted: #697386;
-      --border: #e1e6ee;
-    }
+<style>
+:root {
+  --bg: #f6f7fb;
+  --panel: #ffffff;
+  --text: #17243b;
+  --muted: #718096;
+  --accent: #e87524;
+  --line: #e7eaf0;
+}
 
-    * { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--background);
-      color: var(--text);
-      line-height: 1.55;
-    }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Arial, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
 
-    button, input, textarea, select { font: inherit; }
-    button { cursor: pointer; }
+.app {
+  display: flex;
+  height: 100dvh;
+  overflow: hidden;
+}
 
-    header {
-      background: var(--navy);
-      color: white;
-      padding: 18px 22px;
-    }
+.sidebar {
+  width: 270px;
+  flex-shrink: 0;
+  background: #17243b;
+  color: white;
+  padding: 22px 14px;
+  overflow-y: auto;
+}
 
-    .header-inner {
-      max-width: 1100px;
-      margin: auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
+.brand {
+  font-size: 26px;
+  font-weight: 800;
+  padding: 8px 12px 25px;
+}
 
-    .brand {
-      font-size: 29px;
-      font-weight: 800;
-      letter-spacing: -1px;
-    }
+.brand span {
+  color: #ff984d;
+}
 
-    .brand span { color: var(--orange); }
+.section {
+  color: #a9b5c9;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  margin: 24px 12px 10px;
+}
 
-    .tagline {
-      font-size: 12px;
-      color: #cbd5e1;
-    }
+.nav {
+  display: block;
+  width: 100%;
+  padding: 13px 14px;
+  border: 0;
+  border-radius: 11px;
+  background: transparent;
+  color: #dce3ee;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 3px 0;
+}
 
-    .header-button {
-      color: white;
-      background: transparent;
-      border: 1px solid #53617a;
-      border-radius: 9px;
-      padding: 9px 14px;
-    }
+.nav:hover,
+.nav.active {
+  background: #30405a;
+  color: white;
+}
 
-    main {
-      max-width: 1100px;
-      padding: 26px 18px 60px;
-      margin: auto;
-    }
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
 
-    .hero {
-      background: linear-gradient(135deg, #101b30, #304d70);
-      color: white;
-      padding: 38px 28px;
-      border-radius: 20px;
-      margin-bottom: 28px;
-    }
+.topbar {
+  height: 66px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--line);
+  background: white;
+}
 
-    .hero h1 {
-      font-size: clamp(30px, 5vw, 45px);
-      line-height: 1.15;
-      letter-spacing: -1px;
-      margin: 0 0 14px;
-    }
+.menu {
+  background: none;
+  border: 0;
+  font-size: 23px;
+  cursor: pointer;
+  color: var(--text);
+}
 
-    .hero p {
-      color: #dce5f0;
-      max-width: 650px;
-      margin: 0 0 22px;
-    }
+.top-title {
+  font-weight: 700;
+}
 
-    .primary-button {
-      background: var(--orange);
-      color: white;
-      border: 0;
-      border-radius: 10px;
-      padding: 13px 19px;
-      font-weight: 700;
-    }
+.status {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--muted);
+}
 
-    .primary-button:hover { background: #df6415; }
+.chat {
+  flex: 1;
+  overflow-y: auto;
+  padding: 30px 20px;
+}
 
-    .section-title {
-      font-size: 24px;
-      margin: 30px 0 6px;
-    }
+.welcome {
+  max-width: 690px;
+  margin: 10vh auto 0;
+  text-align: center;
+}
 
-    .section-description {
-      color: var(--muted);
-      margin: 0 0 18px;
-    }
+.welcome h1 {
+  font-size: clamp(30px, 5vw, 45px);
+  margin-bottom: 12px;
+}
 
-    .categories {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 15px;
-    }
+.welcome p {
+  color: var(--muted);
+  line-height: 1.7;
+}
 
-    .category {
-      text-align: left;
-      background: white;
-      color: var(--text);
-      border: 1px solid var(--border);
-      border-radius: 15px;
-      padding: 20px;
-      min-height: 150px;
-      transition: transform .15s, border-color .15s;
-    }
+.messages {
+  max-width: 850px;
+  margin: auto;
+}
 
-    .category:hover {
-      transform: translateY(-3px);
-      border-color: var(--orange);
-    }
+.message {
+  padding: 17px 20px;
+  border-radius: 16px;
+  margin: 16px 0;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 
-    .emoji {
-      font-size: 29px;
-      display: block;
-      margin-bottom: 9px;
-    }
+.message.user {
+  background: #e7ecf5;
+  margin-left: 12%;
+}
 
-    .category strong {
-      display: block;
-      font-size: 17px;
-      margin-bottom: 5px;
-    }
+.message.assistant {
+  background: white;
+  border: 1px solid var(--line);
+  margin-right: 7%;
+}
 
-    .category small {
-      color: var(--muted);
-      font-size: 13px;
-    }
+.composer {
+  padding: 16px 20px 24px;
+  background: var(--bg);
+}
 
-    .panel {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 17px;
-      padding: 24px;
-      margin-top: 25px;
-    }
+.composer-inner {
+  max-width: 850px;
+  margin: auto;
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  background: white;
+  border: 1px solid #dce1e9;
+  border-radius: 18px;
+  padding: 10px;
+  box-shadow: 0 4px 22px #15243b0a;
+}
 
-    .panel h2 {
-      font-size: 23px;
-      margin: 0 0 6px;
-    }
+textarea {
+  flex: 1;
+  resize: none;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  padding: 12px;
+  min-height: 48px;
+  max-height: 180px;
+}
 
-    .muted {
-      color: var(--muted);
-      font-size: 14px;
-    }
+.send {
+  border: 0;
+  border-radius: 12px;
+  padding: 14px 20px;
+  color: white;
+  background: var(--accent);
+  cursor: pointer;
+  font-weight: 700;
+}
 
-    label {
-      display: block;
-      font-weight: 700;
-      margin: 17px 0 7px;
-    }
+.send:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
 
-    input, textarea, select {
-      width: 100%;
-      border: 1px solid #ccd4e0;
-      border-radius: 10px;
-      padding: 13px;
-      background: white;
-      color: var(--text);
-    }
+.project {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px;
+  margin: 12px 0;
+  cursor: pointer;
+}
 
-    textarea {
-      min-height: 120px;
-      resize: vertical;
-    }
+.project:hover {
+  border-color: var(--accent);
+}
 
-    input:focus, textarea:focus, select:focus {
-      outline: 2px solid #f9b17e;
-      border-color: var(--orange);
-    }
+.project small {
+  color: var(--muted);
+}
 
-    .full-button {
-      width: 100%;
-      margin-top: 16px;
-    }
+.action {
+  padding: 10px 16px;
+  background: #17243b;
+  color: white;
+  border: 0;
+  border-radius: 9px;
+  cursor: pointer;
+}
 
-    .hidden { display: none !important; }
+@media (max-width: 700px) {
+  .sidebar {
+    position: absolute;
+    z-index: 10;
+    height: 100%;
+    transform: translateX(-100%);
+    transition: transform 0.2s;
+  }
 
-    .response {
-      background: #f7f9fc;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
-      margin-top: 18px;
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-    }
+  .sidebar.open {
+    transform: translateX(0);
+  }
 
-    .response h3 { margin-top: 0; }
+  .topbar {
+    padding: 0 15px;
+  }
 
-    .history-item {
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 15px;
-      margin-top: 12px;
-    }
+  .status {
+    display: none;
+  }
 
-    .history-item strong {
-      display: block;
-      margin-bottom: 5px;
-    }
+  .chat {
+    padding: 15px;
+  }
 
-    .history-item p {
-      margin: 5px 0;
-      overflow-wrap: anywhere;
-    }
+  .message.user {
+    margin-left: 5%;
+  }
 
-    .secondary-button {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      padding: 9px 13px;
-      margin-top: 8px;
-      color: var(--text);
-    }
+  .message.assistant {
+    margin-right: 0;
+  }
 
-    .status {
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 12px;
-    }
+  .composer {
+    padding: 10px;
+  }
+}
 
-    footer {
-      text-align: center;
-      padding: 25px 18px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    @media (max-width: 760px) {
-      .categories { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .hero { padding: 29px 21px; }
-    }
-
-    @media (max-width: 430px) {
-      .categories { grid-template-columns: 1fr; }
-      .category { min-height: auto; }
-      .panel { padding: 18px; }
-    }
-  </style>
+@media (min-width: 701px) {
+  .sidebar.closed {
+    display: none;
+  }
+}
+</style>
 </head>
 
 <body>
-  <header>
-    <div class="header-inner">
-      <div>
-        <div class="brand">Life<span>Wise</span></div>
-        <div class="tagline">Your everyday problem-solving assistant</div>
-      </div>
-      <button class="header-button" id="historyButton">
-        My LifeWise Portfolio
-      </button>
-    </div>
-  </header>
+<div class="app">
 
-  <main>
-    <section class="hero">
-      <h1>Life gets complicated.<br>Let's figure it out together.</h1>
-      <p>
-        Get help with everyday decisions, finances, home projects,
-        planning, and life's unexpected problems. Keep your advice
-        organized so you can return to it whenever you need it.
-      </p>
-      <button class="primary-button" id="startButton">Get Started</button>
-    </section>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">Life<span>Wise</span></div>
 
-    <section id="homeSection">
-      <h2 class="section-title">What can we help you with?</h2>
-      <p class="section-description">
-        Choose a category or describe whatever is on your mind.
-      </p>
+    <button class="nav active" data-category="general">
+      Home
+    </button>
 
-      <div class="categories">
-        <button class="category" data-category="Everyday Problems">
-          <span class="emoji">💡</span>
-          <strong>Everyday Problems</strong>
-          <small>Think through challenges and find practical solutions.</small>
-        </button>
+    <button class="nav" data-category="projects">
+      My Projects
+    </button>
 
-        <button class="category" data-category="Money and Budgeting">
-          <span class="emoji">💰</span>
-          <strong>Money and Budgeting</strong>
-          <small>Organize expenses, plan purchases, and explore options.</small>
-        </button>
+    <div class="section">LIFEWISE TOOLS</div>
 
-        <button class="category" data-category="Home and DIY">
-          <span class="emoji">🏠</span>
-          <strong>Home and DIY</strong>
-          <small>Work through repairs, projects, and home improvements.</small>
-        </button>
+    <button class="nav" data-category="budget">
+      Money & Budget
+    </button>
 
-        <button class="category" data-category="Shopping and Decisions">
-          <span class="emoji">🛒</span>
-          <strong>Shopping and Decisions</strong>
-          <small>Compare choices and make informed decisions.</small>
-        </button>
+    <button class="nav" data-category="financing">
+      Financing
+    </button>
 
-        <button class="category" data-category="Work and Career">
-          <span class="emoji">💼</span>
-          <strong>Work and Career</strong>
-          <small>Prepare for conversations, organize tasks, and plan ahead.</small>
-        </button>
+    <button class="nav" data-category="career">
+      Career & Work
+    </button>
 
-        <button class="category" data-category="Planning and Goals">
-          <span class="emoji">🎯</span>
-          <strong>Planning and Goals</strong>
-          <small>Break big goals into manageable next steps.</small>
-        </button>
-      </div>
-    </section>
+    <button class="nav" data-category="shopping">
+      Shopping Decisions
+    </button>
 
-    <section class="panel" id="assistantSection">
-      <h2>Talk to LifeWise</h2>
-      <p class="muted">
-        Tell us what's happening. We'll help you work through it.
-      </p>
+    <button class="nav" data-category="diy">
+      DIY & Home
+    </button>
 
-      <label for="categorySelect">What are we working on?</label>
-      <select id="categorySelect">
-        <option>Everyday Problems</option>
-        <option>Money and Budgeting</option>
-        <option>Home and DIY</option>
-        <option>Shopping and Decisions</option>
-        <option>Work and Career</option>
-        <option>Planning and Goals</option>
-        <option>Other</option>
-      </select>
+    <button class="nav" data-category="planning">
+      Planning & Goals
+    </button>
 
-      <label for="questionInput">What's on your mind?</label>
-      <textarea id="questionInput"
-        placeholder="Explain your situation, ask a question, or tell us what you're trying to accomplish..."></textarea>
+    <button class="nav" data-category="everyday">
+      Everyday Problems
+    </button>
+  </aside>
 
-      <label for="goalInput">What would you like to accomplish? (Optional)</label>
-      <input id="goalInput" type="text"
-        placeholder="Example: Save money, fix a problem, make a decision...">
+  <main class="main">
 
-      <button class="primary-button full-button" id="askButton">
-        Ask LifeWise
+    <header class="topbar">
+      <button class="menu" id="menuButton" aria-label="Toggle menu">
+        ☰
       </button>
 
-      <p class="status" id="assistantStatus" role="status">
-        Ready when you are.
-      </p>
+      <div class="top-title" id="pageTitle">LifeWise</div>
 
-      <div class="response hidden" id="answerBox" aria-live="polite"></div>
-    </section>
+      <div class="status">Your everyday problem-solving assistant</div>
+    </header>
 
-    <section class="panel" id="portfolioSection">
-      <h2>My LifeWise Portfolio</h2>
-      <p class="muted">
-        Keep a personal record of your questions, advice, and plans.
-        Your saved entries appear here on this device.
-      </p>
-
-      <div id="historyList">
-        <p class="muted">Your saved conversations will appear here.</p>
+    <section class="chat" id="chatArea">
+      <div class="welcome" id="welcome">
+        <h1>LifeWise</h1>
+        <p>
+          Your everyday problem-solving assistant.
+          What can I help you figure out today?
+        </p>
       </div>
 
-      <button class="secondary-button" id="exportButton">
-        Export My Portfolio
-      </button>
-
-      <button class="secondary-button" id="clearButton">
-        Clear Saved Portfolio
-      </button>
-
-      <p class="status" id="portfolioStatus"></p>
+      <div class="messages" id="messages"></div>
     </section>
+
+    <footer class="composer" id="composer">
+      <div class="composer-inner">
+        <textarea
+          id="messageInput"
+          placeholder="Ask LifeWise anything..."
+          rows="1"
+        ></textarea>
+
+        <button class="send" id="sendButton">
+          Send
+        </button>
+      </div>
+    </footer>
+
   </main>
+</div>
 
-  <footer>
-    <strong>LifeWise</strong> — Your everyday problem-solving assistant.
-    <br>
-    LifeWise provides general information and is not a substitute for
-    qualified professional advice when needed.
-  </footer>
+<script>
+const sidebar = document.getElementById("sidebar");
+const menuButton = document.getElementById("menuButton");
+const pageTitle = document.getElementById("pageTitle");
+const chatArea = document.getElementById("chatArea");
+const welcome = document.getElementById("welcome");
+const messages = document.getElementById("messages");
+const messageInput = document.getElementById("messageInput");
+const sendButton = document.getElementById("sendButton");
 
-  <script>
-    "use strict";
+let currentCategory = "general";
+let currentConversation = null;
 
-    const $ = (id) => document.getElementById(id);
-    const STORAGE_KEY = "lifewise_portfolio_v1";
+const categoryInfo = {
+  general: {
+    title: "LifeWise",
+    prompt: "You are LifeWise, a practical everyday problem-solving assistant. Help the user with their question and ask useful follow-up questions when needed."
+  },
+  budget: {
+    title: "Money & Budget",
+    prompt: "You are LifeWise's personal budgeting assistant. Help the user understand income, expenses, bills, savings, and spending. Ask for the information you need naturally, one step at a time. Help create a practical budget based on their real circumstances."
+  },
+  financing: {
+    title: "Financing",
+    prompt: "You are LifeWise's financing assistant. Help the user understand financing options, monthly payments, interest rates, loan terms, and affordability. Explain trade-offs clearly and never invent approval terms or guarantee loan approval."
+  },
+  career: {
+    title: "Career & Work",
+    prompt: "You are LifeWise's career assistant. Help with career planning, workplace problems, professional communication, resumes, interviews, and career development. Give practical, personalized advice."
+  },
+  shopping: {
+    title: "Shopping Decisions",
+    prompt: "You are LifeWise's shopping decision assistant. Help the user compare products, prices, features, quality, and value. Ask what matters most and explain the trade-offs before recommending an option."
+  },
+  diy: {
+    title: "DIY & Home",
+    prompt: "You are LifeWise's home improvement assistant. Help with repairs, renovation planning, materials, tools, costs, and project steps. Consider the user's skill level, budget, climate, and safety. Clearly identify when a licensed professional or local code check is needed."
+  },
+  planning: {
+    title: "Planning & Goals",
+    prompt: "You are LifeWise's planning assistant. Help the user turn goals into realistic action plans, milestones, and next steps. Keep plans organized and adapt them as circumstances change."
+  },
+  everyday: {
+    title: "Everyday Problems",
+    prompt: "You are LifeWise's everyday problem-solving assistant. Help the user work through practical challenges, organize options, and decide what to do next. Be clear, calm, and solution-oriented."
+  }
+};
 
-    function getPortfolio() {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        const parsed = saved ? JSON.parse(saved) : [];
-        return Array.isArray(parsed) ? parsed : [];
-      } catch (error) {
-        return [];
-      }
-    }
+function loadConversations() {
+  try {
+    return JSON.parse(
+      localStorage.getItem("lifewise_conversations") || "[]"
+    );
+  } catch {
+    return [];
+  }
+}
 
-    function savePortfolio(entries) {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-        return true;
-      } catch (error) {
-        $("portfolioStatus").textContent =
-          "Unable to save. Browser storage may be unavailable or full.";
-        return false;
-      }
-    }
+function saveConversations() {
+  localStorage.setItem(
+    "lifewise_conversations",
+    JSON.stringify(conversations)
+  );
+}
 
-    function escapeHTML(value) {
-      return String(value).replace(/[&<>"']/g, function (character) {
-        return {
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#039;"
-        }[character];
-      });
-    }
+let conversations = loadConversations();
 
-    function renderPortfolio() {
-      const entries = getPortfolio();
-      const list = $("historyList");
+function createConversation(category) {
+  const conversation = {
+    id: Date.now().toString(),
+    category,
+    title: categoryInfo[category]?.title || "LifeWise",
+    messages: [],
+    updatedAt: new Date().toISOString()
+  };
 
-      if (entries.length === 0) {
-        list.innerHTML =
-          '<p class="muted">No saved conversations yet. Ask LifeWise a question to get started.</p>';
-        return;
-      }
+  conversations.unshift(conversation);
+  saveConversations();
 
-      list.innerHTML = entries.map(function (entry, index) {
-        return `
-          <article class="history-item">
-            <strong>${escapeHTML(entry.category)}</strong>
-            <p>${escapeHTML(entry.question)}</p>
-            <p class="muted">${escapeHTML(entry.date)}</p>
-            <details>
-              <summary>View advice and notes</summary>
-              <p>${escapeHTML(entry.answer || "No answer saved.")}</p>
-              ${entry.goal
-                ? `<p><strong>Goal:</strong> ${escapeHTML(entry.goal)}</p>`
-                : ""}
-            </details>
-            <button class="secondary-button" data-delete="${index}">
-              Delete Entry
-            </button>
-          </article>
-        `;
-      }).join("");
+  return conversation;
+}
 
-      list.querySelectorAll("[data-delete]").forEach(function (button) {
-        button.addEventListener("click", function () {
-          const index = Number(button.dataset.delete);
-          const updated = getPortfolio();
-          updated.splice(index, 1);
+function setActiveNav(category) {
+  document.querySelectorAll(".nav").forEach(button => {
+    button.classList.toggle(
+      "active",
+      button.dataset.category === category
+    );
+  });
+}
 
-          if (savePortfolio(updated)) {
-            renderPortfolio();
-            $("portfolioStatus").textContent = "Entry deleted.";
-          }
-        });
-      });
-    }
+function addMessage(role, content) {
+  const element = document.createElement("div");
 
-    function chooseCategory(category) {
-      $("categorySelect").value = category;
-      $("assistantSection").scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-      $("questionInput").focus({ preventScroll: true });
-    }
+  element.className =
+    "message " + (role === "user" ? "user" : "assistant");
 
-    document.querySelectorAll("[data-category]").forEach(function (button) {
-      button.addEventListener("click", function () {
-        chooseCategory(button.dataset.category);
-      });
+  element.textContent = content;
+  messages.appendChild(element);
+
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+function renderMessages() {
+  messages.replaceChildren();
+
+  if (!currentConversation) return;
+
+  currentConversation.messages.forEach(message => {
+    addMessage(message.role, message.content);
+  });
+}
+
+function openCategory(category) {
+  currentCategory = category;
+  setActiveNav(category);
+
+  welcome.style.display = "none";
+  messages.replaceChildren();
+
+  if (category === "projects") {
+    renderProjects();
+    pageTitle.textContent = "My Projects";
+    messageInput.placeholder = "Ask LifeWise anything...";
+    sidebar.classList.remove("open");
+    return;
+  }
+
+  const info = categoryInfo[category] || categoryInfo.general;
+
+  pageTitle.textContent = info.title;
+  messageInput.placeholder =
+    category === "general"
+      ? "Ask LifeWise anything..."
+      : "What would you like help with?";
+
+  currentConversation = createConversation(category);
+
+  addMessage(
+    "assistant",
+    category === "general"
+      ? "Hi! I'm LifeWise. What's on your mind today?"
+      : "Welcome to " + info.title + ". I'll help you work through this step by step. What would you like to accomplish?"
+  );
+
+  currentConversation.messages.push({
+    role: "assistant",
+    content: messages.lastElementChild.textContent
+  });
+
+  saveConversations();
+  sidebar.classList.remove("open");
+}
+
+function renderProjects() {
+  messages.replaceChildren();
+
+  const heading = document.createElement("h2");
+  heading.textContent = "My Projects";
+  messages.appendChild(heading);
+
+  const description = document.createElement("p");
+  description.textContent =
+    "Your saved conversations and ongoing work, all in one place.";
+  messages.appendChild(description);
+
+  if (!conversations.length) {
+    const empty = document.createElement("p");
+    empty.textContent =
+      "Your conversations will appear here as you start using LifeWise.";
+    messages.appendChild(empty);
+    return;
+  }
+
+  conversations.forEach(conversation => {
+    const card = document.createElement("div");
+    card.className = "project";
+
+    const title = document.createElement("strong");
+    title.textContent =
+      conversation.messages.find(m => m.role === "user")?.content
+        ?.slice(0, 65) ||
+      conversation.title;
+
+    const details = document.createElement("p");
+    details.textContent = conversation.title;
+
+    const date = document.createElement("small");
+    date.textContent = new Date(
+      conversation.updatedAt
+    ).toLocaleString();
+
+    card.append(title, details, date);
+
+    card.addEventListener("click", () => {
+      currentConversation = conversation;
+      currentCategory = conversation.category;
+      setActiveNav(currentCategory);
+      pageTitle.textContent = conversation.title;
+      welcome.style.display = "none";
+      renderMessages();
+      sidebar.classList.remove("open");
     });
 
-    $("startButton").addEventListener("click", function () {
-      $("assistantSection").scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-      $("questionInput").focus({ preventScroll: true });
+    messages.appendChild(card);
+  });
+}
+
+async function sendMessage() {
+  const text = messageInput.value.trim();
+
+  if (!text || sendButton.disabled) return;
+
+  if (currentCategory === "projects") {
+    currentCategory = "general";
+    currentConversation = null;
+  }
+
+  if (!currentConversation) {
+    currentConversation = createConversation(currentCategory);
+  }
+
+  welcome.style.display = "none";
+  addMessage("user", text);
+
+  currentConversation.messages.push({
+    role: "user",
+    content: text
+  });
+
+  currentConversation.updatedAt = new Date().toISOString();
+  saveConversations();
+
+  messageInput.value = "";
+  sendButton.disabled = true;
+  sendButton.textContent = "...";
+
+  const loading = document.createElement("div");
+  loading.className = "message assistant";
+  loading.textContent = "LifeWise is thinking...";
+  messages.appendChild(loading);
+
+  try {
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        input: text,
+        category: currentCategory,
+        instructions:
+          categoryInfo[currentCategory]?.prompt ||
+          categoryInfo.general.prompt,
+        conversation: currentConversation.messages
+      })
     });
 
-    $("historyButton").addEventListener("click", function () {
-      $("portfolioSection").scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-      renderPortfolio();
-    });
+    const data = await response.json();
 
-    $("askButton").addEventListener("click", async function () {
-      const category = $("categorySelect").value;
-      const question = $("questionInput").value.trim();
-      const goal = $("goalInput").value.trim();
-      const status = $("assistantStatus");
-      const answerBox = $("answerBox");
-      const askButton = $("askButton");
-
-      if (!question) {
-        status.textContent = "Please enter a question first.";
-        $("questionInput").focus();
-        return;
-      }
-
-      askButton.disabled = true;
-      askButton.textContent = "Working...";
-      status.textContent = "LifeWise is processing your question...";
-      answerBox.classList.add("hidden");
-
-      try {
-        const response = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ category, question, goal })
-        });
-
-        const data = await response.json().catch(function () {
-          return {};
-        });
-
-        if (!response.ok) {
-          throw new Error(
-            data.error || "The LifeWise server could not process your request."
-          );
-        }
-
-        if (typeof data.answer !== "string" || !data.answer.trim()) {
-          throw new Error("The server did not return an answer.");
-        }
-
-        answerBox.innerHTML =
-          "<h3>Your LifeWise Advice</h3><p>" +
-          escapeHTML(data.answer) +
-          "</p>";
-        answerBox.classList.remove("hidden");
-
-        const entries = getPortfolio();
-        entries.unshift({
-          category,
-          question,
-          goal,
-          answer: data.answer,
-          date: new Date().toLocaleString()
-        });
-
-        if (savePortfolio(entries)) {
-          renderPortfolio();
-          status.textContent = "Your answer is ready and saved to your portfolio.";
-        } else {
-          status.textContent = "Your answer is ready, but could not be saved.";
-        }
-      } catch (error) {
-        status.textContent = error.message ||
-          "Something went wrong. Please try again.";
-
-        answerBox.innerHTML =
-          "<h3>Connection Issue</h3><p>" +
-          escapeHTML(status.textContent) +
-          "</p><p>Check that your backend server is running and /api/chat is configured.</p>";
-
-        answerBox.classList.remove("hidden");
-      } finally {
-        askButton.disabled = false;
-        askButton.textContent = "Ask LifeWise";
-      }
-    });
-
-    $("exportButton").addEventListener("click", function () {
-      const entries = getPortfolio();
-
-      if (entries.length === 0) {
-        $("portfolioStatus").textContent = "There is nothing to export yet.";
-        return;
-      }
-
-      const file = new Blob(
-        [JSON.stringify(entries, null, 2)],
-        { type: "application/json" }
+    if (!response.ok) {
+      throw new Error(
+        data.error || data.message || "The request failed."
       );
+    }
 
-      const url = URL.createObjectURL(file);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "lifewise-portfolio.json";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      URL.revokeObjectURL(url);
+    loading.remove();
 
-      $("portfolioStatus").textContent = "Portfolio export prepared.";
+    const answer =
+      data.output ||
+      data.answer ||
+      data.reply ||
+      data.message ||
+      "I received your request, but no answer was returned.";
+
+    addMessage("assistant", answer);
+
+    currentConversation.messages.push({
+      role: "assistant",
+      content: answer
     });
 
-    $("clearButton").addEventListener("click", function () {
-      if (!window.confirm(
-        "Are you sure you want to permanently clear your saved LifeWise portfolio on this device?"
-      )) {
-        return;
-      }
+    currentConversation.updatedAt = new Date().toISOString();
+    saveConversations();
 
-      if (savePortfolio([])) {
-        renderPortfolio();
-        $("portfolioStatus").textContent = "Your saved portfolio was cleared.";
-      }
-    });
+  } catch (error) {
+    loading.remove();
 
-    renderPortfolio();
-  </script>
+    addMessage(
+      "assistant",
+      "I couldn't connect to LifeWise right now. " +
+      error.message +
+      " Please check the server configuration and try again."
+    );
+  } finally {
+    sendButton.disabled = false;
+    sendButton.textContent = "Send";
+    messageInput.focus();
+  }
+}
+
+document.querySelectorAll(".nav").forEach(button => {
+  button.addEventListener("click", () => {
+    openCategory(button.dataset.category);
+  });
+});
+
+menuButton.addEventListener("click", () => {
+  if (window.innerWidth <= 700) {
+    sidebar.classList.toggle("open");
+  } else {
+    sidebar.classList.toggle("closed");
+  }
+});
+
+sendButton.addEventListener("click", sendMessage);
+
+messageInput.addEventListener("keydown", event => {
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault();
+    sendMessage();
+  }
+});
+
+openCategory("general");
+</script>
+
 </body>
 </html>
