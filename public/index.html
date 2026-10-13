@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,9 +17,7 @@
   --line: #e7eaf0;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -48,9 +47,7 @@ body {
   padding: 8px 12px 25px;
 }
 
-.brand span {
-  color: #ff984d;
-}
+.brand span { color: #ff984d; }
 
 .section {
   color: #a9b5c9;
@@ -87,7 +84,7 @@ body {
 }
 
 .topbar {
-  height: 66px;
+  min-height: 66px;
   display: flex;
   align-items: center;
   gap: 15px;
@@ -104,9 +101,7 @@ body {
   color: var(--text);
 }
 
-.top-title {
-  font-weight: 700;
-}
+.top-title { font-weight: 700; }
 
 .status {
   margin-left: auto;
@@ -214,13 +209,8 @@ textarea {
   cursor: pointer;
 }
 
-.project:hover {
-  border-color: var(--accent);
-}
-
-.project small {
-  color: var(--muted);
-}
+.project:hover { border-color: var(--accent); }
+.project small { color: var(--muted); }
 
 .action {
   padding: 10px 16px;
@@ -240,39 +230,17 @@ textarea {
     transition: transform 0.2s;
   }
 
-  .sidebar.open {
-    transform: translateX(0);
-  }
-
-  .topbar {
-    padding: 0 15px;
-  }
-
-  .status {
-    display: none;
-  }
-
-  .chat {
-    padding: 15px;
-  }
-
-  .message.user {
-    margin-left: 5%;
-  }
-
-  .message.assistant {
-    margin-right: 0;
-  }
-
-  .composer {
-    padding: 10px;
-  }
+  .sidebar.open { transform: translateX(0); }
+  .topbar { padding: 0 15px; }
+  .status { display: none; }
+  .chat { padding: 15px; }
+  .message.user { margin-left: 5%; }
+  .message.assistant { margin-right: 0; }
+  .composer { padding: 10px; }
 }
 
 @media (min-width: 701px) {
-  .sidebar.closed {
-    display: none;
-  }
+  .sidebar.closed { display: none; }
 }
 </style>
 </head>
@@ -283,87 +251,47 @@ textarea {
   <aside class="sidebar" id="sidebar">
     <div class="brand">Life<span>Wise</span></div>
 
-    <button class="nav active" data-category="general">
-      Home
-    </button>
-
-    <button class="nav" data-category="projects">
-      My Projects
-    </button>
+    <button class="nav active" data-category="general">Home</button>
+    <button class="nav" data-category="projects">My Projects</button>
 
     <div class="section">LIFEWISE TOOLS</div>
 
-    <button class="nav" data-category="budget">
-      Money & Budget
-    </button>
-
-    <button class="nav" data-category="financing">
-      Financing
-    </button>
-
-    <button class="nav" data-category="career">
-      Career & Work
-    </button>
-
-    <button class="nav" data-category="shopping">
-      Shopping Decisions
-    </button>
-
-    <button class="nav" data-category="diy">
-      DIY & Home
-    </button>
-
-    <button class="nav" data-category="planning">
-      Planning & Goals
-    </button>
-
-    <button class="nav" data-category="everyday">
-      Everyday Problems
-    </button>
+    <button class="nav" data-category="budget">Money &amp; Budget</button>
+    <button class="nav" data-category="financing">Financing</button>
+    <button class="nav" data-category="career">Career &amp; Work</button>
+    <button class="nav" data-category="shopping">Shopping Decisions</button>
+    <button class="nav" data-category="diy">DIY &amp; Home</button>
+    <button class="nav" data-category="planning">Planning &amp; Goals</button>
+    <button class="nav" data-category="everyday">Everyday Problems</button>
   </aside>
 
   <main class="main">
-
     <header class="topbar">
-      <button class="menu" id="menuButton" aria-label="Toggle menu">
-        ☰
-      </button>
-
+      <button class="menu" id="menuButton" aria-label="Toggle menu">☰</button>
       <div class="top-title" id="pageTitle">LifeWise</div>
-
       <div class="status">Your everyday problem-solving assistant</div>
     </header>
 
     <section class="chat" id="chatArea">
       <div class="welcome" id="welcome">
         <h1>LifeWise</h1>
-        <p>
-          Your everyday problem-solving assistant.
-          What can I help you figure out today?
-        </p>
+        <p>Your everyday problem-solving assistant. What can I help you figure out today?</p>
       </div>
-
       <div class="messages" id="messages"></div>
     </section>
 
     <footer class="composer" id="composer">
       <div class="composer-inner">
-        <textarea
-          id="messageInput"
-          placeholder="Ask LifeWise anything..."
-          rows="1"
-        ></textarea>
-
-        <button class="send" id="sendButton">
-          Send
-        </button>
+        <textarea id="messageInput" placeholder="Ask LifeWise anything..." rows="1"></textarea>
+        <button class="send" id="sendButton">Send</button>
       </div>
     </footer>
-
   </main>
 </div>
 
 <script>
+const API_URL = "https://lifewise-8zc7.onrender.com/api/chat";
+
 const sidebar = document.getElementById("sidebar");
 const menuButton = document.getElementById("menuButton");
 const pageTitle = document.getElementById("pageTitle");
@@ -413,13 +341,13 @@ const categoryInfo = {
 
 function loadConversations() {
   try {
-    return JSON.parse(
-      localStorage.getItem("lifewise_conversations") || "[]"
-    );
+    return JSON.parse(localStorage.getItem("lifewise_conversations") || "[]");
   } catch {
     return [];
   }
 }
+
+let conversations = loadConversations();
 
 function saveConversations() {
   localStorage.setItem(
@@ -427,8 +355,6 @@ function saveConversations() {
     JSON.stringify(conversations)
   );
 }
-
-let conversations = loadConversations();
 
 function createConversation(category) {
   const conversation = {
@@ -441,7 +367,6 @@ function createConversation(category) {
 
   conversations.unshift(conversation);
   saveConversations();
-
   return conversation;
 }
 
@@ -456,19 +381,14 @@ function setActiveNav(category) {
 
 function addMessage(role, content) {
   const element = document.createElement("div");
-
-  element.className =
-    "message " + (role === "user" ? "user" : "assistant");
-
+  element.className = "message " + (role === "user" ? "user" : "assistant");
   element.textContent = content;
   messages.appendChild(element);
-
   chatArea.scrollTop = chatArea.scrollHeight;
 }
 
 function renderMessages() {
   messages.replaceChildren();
-
   if (!currentConversation) return;
 
   currentConversation.messages.forEach(message => {
@@ -479,11 +399,11 @@ function renderMessages() {
 function openCategory(category) {
   currentCategory = category;
   setActiveNav(category);
-
   welcome.style.display = "none";
   messages.replaceChildren();
 
   if (category === "projects") {
+    currentConversation = null;
     renderProjects();
     pageTitle.textContent = "My Projects";
     messageInput.placeholder = "Ask LifeWise anything...";
@@ -492,25 +412,21 @@ function openCategory(category) {
   }
 
   const info = categoryInfo[category] || categoryInfo.general;
-
   pageTitle.textContent = info.title;
-  messageInput.placeholder =
-    category === "general"
-      ? "Ask LifeWise anything..."
-      : "What would you like help with?";
+  messageInput.placeholder = category === "general"
+    ? "Ask LifeWise anything..."
+    : "What would you like help with?";
 
   currentConversation = createConversation(category);
 
-  addMessage(
-    "assistant",
-    category === "general"
-      ? "Hi! I'm LifeWise. What's on your mind today?"
-      : "Welcome to " + info.title + ". I'll help you work through this step by step. What would you like to accomplish?"
-  );
+  const greeting = category === "general"
+    ? "Hi! I'm LifeWise. What's on your mind today?"
+    : "Welcome to " + info.title + ". I'll help you work through this step by step. What would you like to accomplish?";
 
+  addMessage("assistant", greeting);
   currentConversation.messages.push({
     role: "assistant",
-    content: messages.lastElementChild.textContent
+    content: greeting
   });
 
   saveConversations();
@@ -525,14 +441,12 @@ function renderProjects() {
   messages.appendChild(heading);
 
   const description = document.createElement("p");
-  description.textContent =
-    "Your saved conversations and ongoing work, all in one place.";
+  description.textContent = "Your saved conversations and ongoing work, all in one place.";
   messages.appendChild(description);
 
   if (!conversations.length) {
     const empty = document.createElement("p");
-    empty.textContent =
-      "Your conversations will appear here as you start using LifeWise.";
+    empty.textContent = "Your conversations will appear here as you start using LifeWise.";
     messages.appendChild(empty);
     return;
   }
@@ -543,17 +457,14 @@ function renderProjects() {
 
     const title = document.createElement("strong");
     title.textContent =
-      conversation.messages.find(m => m.role === "user")?.content
-        ?.slice(0, 65) ||
-      conversation.title;
+      conversation.messages.find(m => m.role === "user")?.content?.slice(0, 65)
+      || conversation.title;
 
     const details = document.createElement("p");
     details.textContent = conversation.title;
 
     const date = document.createElement("small");
-    date.textContent = new Date(
-      conversation.updatedAt
-    ).toLocaleString();
+    date.textContent = new Date(conversation.updatedAt).toLocaleString();
 
     card.append(title, details, date);
 
@@ -573,12 +484,13 @@ function renderProjects() {
 
 async function sendMessage() {
   const text = messageInput.value.trim();
-
   if (!text || sendButton.disabled) return;
 
   if (currentCategory === "projects") {
     currentCategory = "general";
     currentConversation = null;
+    setActiveNav("general");
+    pageTitle.textContent = categoryInfo.general.title;
   }
 
   if (!currentConversation) {
@@ -606,7 +518,7 @@ async function sendMessage() {
   messages.appendChild(loading);
 
   try {
-    const response = await fetch("/api/chat", {
+    const response = await fetch(API_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -689,6 +601,5 @@ messageInput.addEventListener("keydown", event => {
 
 openCategory("general");
 </script>
-
 </body>
 </html>
