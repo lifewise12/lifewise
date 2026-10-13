@@ -1,4 +1,5 @@
 
+
 const express = require("express");
 const path = require("path");
 const OpenAI = require("openai");
@@ -6,68 +7,152 @@ const OpenAI = require("openai");
 const app = express();
 
 app.use(express.json({ limit: "1mb" }));
+
 app.use(express.static(path.join(__dirname, "public")));
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+const categoryPrompts = {
+  general:
+    "Help the user solve everyday problems with clear, practical advice.",
+
+  budget:
+    "You are a personal budgeting assistant. Help with income, bills, expenses, debt, savings, and realistic budgets. Ask for missing information one question at a time.",
+
+  financing:
+    "You are a financing assistant. Explain loans, interest rates, monthly payments, financing options, and affordability. Never guarantee loan approval or invent terms.",
+
+  career:
+    "You are a career assistant. Help with workplace problems, career planning, resumes, interviews, and professional communication.",
+
+  shopping:
+    "You are a shopping decision assistant. Compare products, prices, features, quality, and value. Explain trade-offs and do not invent current prices.",
+
+  diy:
+    "You are a home improvement assistant. Help with repairs, renovations, materials, tools, costs, and project steps. Prioritize safety and applicable building codes.",
+
+  planning:
+    "You are a planning assistant. Turn goals into realistic action plans with milestones and clear next steps.",
+
+  everyday:
+    "You are an everyday problem-solving assistant. Help the user evaluate options and decide what to do next."
+};
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+app.get("/api/health", (req, res) => {
+  res.json({
+    status: "ok",
+    service: "LifeWise"
+  });
+});
+
 app.post("/api/chat", async (req, res) => {
   try {
-    const { category, question, goal } = req.body || {};
+    const body = req.body || {};
 
-    if (!question || !question.trim()) {
+    // Accept either field name so the frontend and backend agree.
+    const question = body.input ?? body.question;
+
+    const category = body.category || "general";
+    const goal = body.goal || "";
+    const instructions = body.instructions || "";
+
+    if (typeof question !== "string" || !question.trim()) {
       return res.status(400).json({
-        error: "Please enter a question first.",
+        error: "Please enter a question first."
       });
     }
+
+    // Include the conversation history sent by the frontend.
+    const conversation = Array.isArray(body.conversation)
+      ? body.conversation
+          .filter(message =>
+            message &&
+            ["user", "assistant"].includes(message.role) &&
+            typeof message.content === "string"
+          )
+          .slice(-30)
+          .map(message => ({
+            role: message.role,
+            content: message.content
+          }))
+      : [];
+
+    const categoryInstruction =
+      categoryPrompts[category] ||
+      categoryPrompts.general;
 
     const prompt = `
 You are LifeWise, a practical everyday problem-solving assistant.
 
-YOUR RESPONSE STYLE IS EXTREMELY IMPORTANT.
+YOUR RESPONSE STYLE:
 
-Write answers that are clean, concise, organized, and easy to scan.
-
-Follow these rules:
-
-1. Start with a direct answer to the user's question.
+1. Start with a direct answer.
 2. Use short paragraphs and simple language.
-3. When steps are needed, use a short numbered list.
-4. Use simple headings only when they genuinely help.
-5. Keep answers focused on what the user actually asked.
-6. Use plain text. Avoid Markdown formatting symbols.
-7. Do not use asterisks, hashtags, decorative dashes,
-   excessive headings, or long walls of text.
-8. Avoid repeating the same information.
-9. Use a small table only when it makes a comparison clearer.
-10. Use a simple chart only when numerical data makes a chart useful.
-11. Never invent statistics or numerical data.
-12. Ask one clear follow-up question if essential information
-    is missing. Do not overwhelm the user with questions.
-13. Give practical next steps instead of unnecessary explanations.
-14. Be friendly, direct, and professional.
+3. Use numbered steps when helpful.
+4. Use headings only when useful.
+5. Keep answers focused on the user's question.
+6. Avoid excessive formatting, hashtags, and decorative symbols.
+7. Do not repeat information unnecessarily.
+8. Never invent statistics, prices, or facts.
+9. Ask one clear follow-up question when needed.
+10. Provide practical next steps.
 
 For simple questions, answer in a few sentences.
-For complicated questions, organize the answer into short,
-clearly labeled sections.
+For complex questions, organize the response into clear sections.
 
-Category: ${category || "Everyday Problems"}
+CURRENT CATEGORY:
+${category}
 
-User question:
-${question.trim()}
+CATEGORY-SPECIFIC INSTRUCTIONS:
+${categoryInstruction}
 
-User's goal:
-${goal && goal.trim() ? goal.trim() : "No specific goal provided."}
+ADDITIONAL CATEGORY INSTRUCTIONS:
+${instructions}
+
+USER'S GOAL:
+${typeof goal === "string" && goal.trim()
+  ? goal.trim()
+  : "No specific goal provided."}
+
+Use the conversation history to maintain context.
+Answer the user's latest message rather than restarting the conversation.
 `;
+
+    const history = conversation.slice(-30);
+
+    // Avoid adding the current question twice if it is already
+    // the last message in the supplied conversation.
+    const lastMessage = history[history.length - 1];
+
+    const alreadyIncluded =
+      lastMessage &&
+      lastMessage.role === "user" &&
+      lastMessage.content.trim() === question.trim();
+
+    if (!alreadyIncluded) {
+      history.push({
+        role: "user",
+        content: question.trim()
+      });
+    }
+
+    const openaiInput = [
+      {
+        role: "system",
+        content: prompt
+      },
+      ...history
+    ];
 
     const response = await openai.responses.create({
       model: process.env.OPENAI_MODEL || "gpt-4.1-mini",
-      input: prompt,
+      input: openaiInput
     });
 
     const answer = response.output_text;
@@ -76,13 +161,19 @@ ${goal && goal.trim() ? goal.trim() : "No specific goal provided."}
       throw new Error("The AI returned an empty answer.");
     }
 
-    res.json({ answer: answer.trim() });
+    return res.json({
+      answer: answer.trim(),
+      output: answer.trim()
+    });
 
   } catch (error) {
-    console.error("LifeWise request failed:", error.message);
+    console.error(
+      "LifeWise request failed:",
+      error.message
+    );
 
-    res.status(500).json({
-      error: "LifeWise couldn't answer right now. Please try again.",
+    return res.status(500).json({
+      error: "LifeWise couldn't answer right now. Please try again."
     });
   }
 });
