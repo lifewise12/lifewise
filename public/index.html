@@ -1,246 +1,350 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LifeWise | Your Everyday Assistant</title>
+<title>LifeWise | Your Life, Organized</title>
 
 <style>
 :root {
-  --bg: #f6f7fb;
-  --panel: #ffffff;
-  --text: #17243b;
-  --muted: #718096;
-  --accent: #e87524;
-  --line: #e7eaf0;
+  --navy: #17243b;
+  --orange: #e87524;
+  --bg: #f5f6fa;
+  --text: #19263b;
+  --muted: #758197;
+  --line: #e6e9ef;
+  --white: #ffffff;
 }
 
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, Arial, sans-serif;
-  color: var(--text);
+  font-family: system-ui, Arial, sans-serif;
   background: var(--bg);
+  color: var(--text);
 }
 
-.app {
-  display: flex;
-  height: 100dvh;
-  overflow: hidden;
-}
+button, input, textarea, select { font: inherit; }
+button { cursor: pointer; }
+
+.app { display: flex; min-height: 100vh; }
 
 .sidebar {
-  width: 270px;
+  width: 245px;
   flex-shrink: 0;
-  background: #17243b;
+  background: var(--navy);
   color: white;
-  padding: 22px 14px;
-  overflow-y: auto;
+  padding: 22px 13px;
 }
 
 .brand {
-  font-size: 26px;
-  font-weight: 800;
-  padding: 8px 12px 25px;
+  font-size: 27px;
+  font-weight: 850;
+  padding: 6px 12px 25px;
 }
 
 .brand span { color: #ff984d; }
 
-.section {
-  color: #a9b5c9;
-  font-size: 11px;
-  letter-spacing: 1.5px;
-  margin: 24px 12px 10px;
+.nav-label {
+  color: #9eacc1;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  padding: 17px 12px 7px;
 }
 
 .nav {
   display: block;
   width: 100%;
-  padding: 13px 14px;
-  border: 0;
-  border-radius: 11px;
-  background: transparent;
-  color: #dce3ee;
-  text-align: left;
-  cursor: pointer;
-  font-size: 14px;
+  padding: 12px;
   margin: 3px 0;
+  text-align: left;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #d8dfeb;
+  font-size: 13px;
 }
 
-.nav:hover,
-.nav.active {
+.nav:hover, .nav.active {
   background: #30405a;
   color: white;
 }
 
 .main {
   flex: 1;
-  display: flex;
-  flex-direction: column;
   min-width: 0;
 }
 
 .topbar {
-  min-height: 66px;
+  height: 65px;
+  padding: 0 25px;
+  background: white;
+  border-bottom: 1px solid var(--line);
   display: flex;
   align-items: center;
-  gap: 15px;
-  padding: 0 24px;
-  border-bottom: 1px solid var(--line);
-  background: white;
+  gap: 14px;
 }
 
-.menu {
-  background: none;
+.menu-button {
+  display: none;
   border: 0;
+  background: transparent;
   font-size: 23px;
-  cursor: pointer;
-  color: var(--text);
 }
 
-.top-title { font-weight: 700; }
+.page-title { font-weight: 750; }
 
-.status {
-  margin-left: auto;
-  font-size: 12px;
-  color: var(--muted);
-}
-
-.chat {
-  flex: 1;
-  overflow-y: auto;
-  padding: 30px 20px;
-}
-
-.welcome {
-  max-width: 690px;
-  margin: 10vh auto 0;
-  text-align: center;
-}
-
-.welcome h1 {
-  font-size: clamp(30px, 5vw, 45px);
-  margin-bottom: 12px;
-}
-
-.welcome p {
-  color: var(--muted);
-  line-height: 1.7;
-}
-
-.messages {
-  max-width: 850px;
+.content {
+  max-width: 1150px;
+  padding: 28px;
   margin: auto;
 }
 
+.page { display: none; }
+.page.active { display: block; }
+
+h1 {
+  font-size: clamp(27px, 4vw, 38px);
+  line-height: 1.2;
+  margin: 9px 0;
+}
+
+h2 { font-size: 19px; }
+h3 { font-size: 15px; }
+p { line-height: 1.65; }
+
+.muted { color: var(--muted); }
+.small { font-size: 12px; }
+
+.eyebrow {
+  color: var(--orange);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+
+.hero {
+  padding: 32px;
+  border-radius: 18px;
+  color: white;
+  background: linear-gradient(120deg, #17243b, #304762);
+}
+
+.hero p { color: #d3dce8; }
+
+.composer {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  padding: 9px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+}
+
+.composer textarea {
+  flex: 1;
+  min-width: 0;
+  min-height: 45px;
+  max-height: 150px;
+  resize: vertical;
+  border: 0;
+  outline: 0;
+  padding: 10px;
+  color: var(--text);
+}
+
+.primary, .secondary, .danger {
+  border: 0;
+  border-radius: 9px;
+  padding: 11px 14px;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.primary { background: var(--orange); color: white; }
+.secondary { background: #edf0f5; color: var(--navy); }
+.danger { background: #fff0ee; color: #b33b31; }
+
+.primary:disabled { opacity: .55; cursor: wait; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.card, .stat {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 19px;
+  min-width: 0;
+}
+
+.card-click { cursor: pointer; }
+.card-click:hover { border-color: var(--orange); }
+
+.card-icon {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.card p { color: var(--muted); font-size: 12px; }
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 27px 0 13px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.stat strong {
+  display: block;
+  font-size: 27px;
+  margin: 5px 0;
+}
+
+.stat span { color: var(--muted); font-size: 11px; }
+
+.form-field { margin: 14px 0; }
+
+.form-field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 750;
+  margin-bottom: 6px;
+}
+
+.form-field input,
+.form-field textarea,
+.form-field select,
+.search {
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #dce2eb;
+  border-radius: 9px;
+  background: white;
+  color: var(--text);
+}
+
+.form-field textarea { min-height: 85px; }
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
 .message {
-  padding: 17px 20px;
-  border-radius: 16px;
-  margin: 16px 0;
-  line-height: 1.65;
-  white-space: pre-wrap;
+  padding: 15px 17px;
+  margin: 12px 0;
+  border-radius: 13px;
+  font-size: 14px;
+  line-height: 1.7;
   overflow-wrap: anywhere;
 }
 
 .message.user {
-  background: #e7ecf5;
+  background: #e6ecf5;
   margin-left: 12%;
 }
 
 .message.assistant {
   background: white;
   border: 1px solid var(--line);
-  margin-right: 7%;
+  margin-right: 4%;
 }
 
-.composer {
-  padding: 16px 20px 24px;
-  background: var(--bg);
+.message-label {
+  font-size: 10px;
+  color: var(--muted);
+  font-weight: 800;
+  margin-bottom: 6px;
 }
 
-.composer-inner {
-  max-width: 850px;
-  margin: auto;
-  display: flex;
-  align-items: flex-end;
-  gap: 12px;
-  background: white;
-  border: 1px solid #dce1e9;
-  border-radius: 18px;
-  padding: 10px;
-  box-shadow: 0 4px 22px #15243b0a;
+.message-body {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
-textarea {
-  flex: 1;
-  resize: none;
-  border: 0;
-  outline: 0;
-  font: inherit;
-  padding: 12px;
-  min-height: 48px;
-  max-height: 180px;
+.list-item {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--line);
 }
 
-.send {
-  border: 0;
+.list-item:last-child { border-bottom: 0; }
+
+.item-title { font-size: 14px; font-weight: 750; }
+.item-meta { color: var(--muted); font-size: 11px; margin-top: 5px; }
+
+.empty {
+  padding: 25px;
+  border: 1px dashed #d5dce7;
   border-radius: 12px;
-  padding: 14px 20px;
-  color: white;
-  background: var(--accent);
-  cursor: pointer;
-  font-weight: 700;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
 }
 
-.send:disabled {
-  opacity: 0.5;
-  cursor: wait;
+.progress {
+  height: 8px;
+  background: #edf0f5;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 10px 0;
 }
 
-.project {
-  background: white;
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 18px;
-  margin: 12px 0;
-  cursor: pointer;
+.progress div {
+  height: 100%;
+  background: #258568;
 }
 
-.project:hover { border-color: var(--accent); }
-.project small { color: var(--muted); }
-
-.action {
-  padding: 10px 16px;
-  background: #17243b;
-  color: white;
-  border: 0;
-  border-radius: 9px;
-  cursor: pointer;
+.check-row {
+  display: flex;
+  gap: 10px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
 }
 
-@media (max-width: 700px) {
+.check-row.done span {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+@media (max-width: 850px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .content { padding: 20px; }
+}
+
+@media (max-width: 650px) {
   .sidebar {
-    position: absolute;
-    z-index: 10;
-    height: 100%;
-    transform: translateX(-100%);
-    transition: transform 0.2s;
+    position: fixed;
+    z-index: 20;
+    inset: 0 auto 0 0;
+    transform: translateX(-105%);
+    transition: transform .2s;
+    overflow-y: auto;
   }
 
   .sidebar.open { transform: translateX(0); }
-  .topbar { padding: 0 15px; }
-  .status { display: none; }
-  .chat { padding: 15px; }
-  .message.user { margin-left: 5%; }
-  .message.assistant { margin-right: 0; }
-  .composer { padding: 10px; }
-}
-
-@media (min-width: 701px) {
-  .sidebar.closed { display: none; }
+  .menu-button { display: block; }
+  .topbar { padding: 0 14px; }
+  .content { padding: 15px; }
+  .grid, .stats { grid-template-columns: 1fr; }
+  .hero { padding: 22px; }
 }
 </style>
 </head>
@@ -248,358 +352,950 @@ textarea {
 <body>
 <div class="app">
 
-  <aside class="sidebar" id="sidebar">
-    <div class="brand">Life<span>Wise</span></div>
+<aside class="sidebar" id="sidebar">
+  <div class="brand">Life<span>Wise</span></div>
 
-    <button class="nav active" data-category="general">Home</button>
-    <button class="nav" data-category="projects">My Projects</button>
+  <div class="nav-label">YOUR SPACE</div>
+  <button class="nav active" data-page="dashboard">⌂ &nbsp; Dashboard</button>
+  <button class="nav" data-page="projects">▣ &nbsp; My Projects</button>
+  <button class="nav" data-page="library">▤ &nbsp; Life Library</button>
+  <button class="nav" data-page="actions">✓ &nbsp; Action Centre</button>
 
-    <div class="section">LIFEWISE TOOLS</div>
+  <div class="nav-label">SPECIALIZED HELP</div>
+  <button class="nav" data-category="budget">＄ &nbsp; Money &amp; Budget</button>
+  <button class="nav" data-category="financing">◈ &nbsp; Financing</button>
+  <button class="nav" data-category="career">▥ &nbsp; Career &amp; Work</button>
+  <button class="nav" data-category="shopping">◇ &nbsp; Shopping Decisions</button>
+  <button class="nav" data-category="diy">⌂ &nbsp; DIY &amp; Home</button>
+  <button class="nav" data-category="planning">◎ &nbsp; Planning &amp; Goals</button>
+  <button class="nav" data-category="everyday">✳ &nbsp; Everyday Problems</button>
+</aside>
 
-    <button class="nav" data-category="budget">Money &amp; Budget</button>
-    <button class="nav" data-category="financing">Financing</button>
-    <button class="nav" data-category="career">Career &amp; Work</button>
-    <button class="nav" data-category="shopping">Shopping Decisions</button>
-    <button class="nav" data-category="diy">DIY &amp; Home</button>
-    <button class="nav" data-category="planning">Planning &amp; Goals</button>
-    <button class="nav" data-category="everyday">Everyday Problems</button>
-  </aside>
+<main class="main">
+  <header class="topbar">
+    <button class="menu-button" id="menuButton">☰</button>
+    <div class="page-title" id="pageTitle">Your Dashboard</div>
+  </header>
 
-  <main class="main">
-    <header class="topbar">
-      <button class="menu" id="menuButton" aria-label="Toggle menu">☰</button>
-      <div class="top-title" id="pageTitle">LifeWise</div>
-      <div class="status">Your everyday problem-solving assistant</div>
-    </header>
+  <div class="content">
 
-    <section class="chat" id="chatArea">
-      <div class="welcome" id="welcome">
-        <h1>LifeWise</h1>
-        <p>Your everyday problem-solving assistant. What can I help you figure out today?</p>
+    <section class="page active" id="page-dashboard">
+      <div class="hero">
+        <div class="eyebrow">YOUR PERSONAL LIFE SYSTEM</div>
+        <h1>Let's move life forward.</h1>
+        <p>Make decisions, organize projects, plan your goals, and turn ideas into action.</p>
+        <div class="composer">
+          <textarea id="homeInput" placeholder="What's on your mind?"></textarea>
+          <button class="primary" id="homeSend">Ask LifeWise</button>
+        </div>
       </div>
-      <div class="messages" id="messages"></div>
+
+      <div class="stats">
+        <div class="stat"><span>PROJECTS</span><strong id="projectCount">0</strong></div>
+        <div class="stat"><span>LIBRARY NOTES</span><strong id="noteCount">0</strong></div>
+        <div class="stat"><span>OPEN ACTIONS</span><strong id="actionCount">0</strong></div>
+      </div>
+
+      <div class="section-head"><h2>What would you like to work on?</h2></div>
+
+      <div class="grid">
+        <div class="card card-click" data-category-card="budget"><div class="card-icon">＄</div><h3>Money &amp; Budget</h3><p>Organize your finances and savings goals.</p></div>
+        <div class="card card-click" data-category-card="financing"><div class="card-icon">◈</div><h3>Financing</h3><p>Compare payments and financing options.</p></div>
+        <div class="card card-click" data-category-card="career"><div class="card-icon">▥</div><h3>Career &amp; Work</h3><p>Plan career moves and solve work problems.</p></div>
+        <div class="card card-click" data-category-card="shopping"><div class="card-icon">◇</div><h3>Shopping Decisions</h3><p>Compare options and make informed choices.</p></div>
+        <div class="card card-click" data-category-card="diy"><div class="card-icon">⌂</div><h3>DIY &amp; Home</h3><p>Plan repairs and renovation projects.</p></div>
+        <div class="card card-click" data-category-card="planning"><div class="card-icon">◎</div><h3>Planning &amp; Goals</h3><p>Turn goals into achievable plans.</p></div>
+      </div>
+
+      <div class="section-head"><h2>Recent projects</h2></div>
+      <div class="card" id="recentProjects"></div>
     </section>
 
-    <footer class="composer" id="composer">
-      <div class="composer-inner">
-        <textarea id="messageInput" placeholder="Ask LifeWise anything..." rows="1"></textarea>
-        <button class="send" id="sendButton">Send</button>
+    <section class="page" id="page-chat">
+      <div class="eyebrow" id="chatEyebrow">LIFEWISE</div>
+      <h1 id="chatHeading">What's on your mind?</h1>
+      <p class="muted" id="chatDescription">Let's work through it together.</p>
+
+      <div class="button-row">
+        <button class="secondary" id="newChatButton">New conversation</button>
+        <button class="secondary" id="saveNoteButton">Save a note</button>
+        <button class="secondary" id="createActionButton">Create an action</button>
+        <button class="secondary" id="linkProjectButton">Link to project</button>
       </div>
-    </footer>
-  </main>
+
+      <div id="chatMessages"></div>
+
+      <div class="composer">
+        <textarea id="chatInput" placeholder="Type your message..."></textarea>
+        <button class="primary" id="chatSend">Send</button>
+      </div>
+    </section>
+
+    <section class="page" id="page-projects">
+      <div class="eyebrow">YOUR WORKSPACE</div>
+      <h1>My Projects</h1>
+      <p class="muted">Bring conversations, notes, decisions, and action items together.</p>
+
+      <div class="card">
+        <h3>Create a project</h3>
+        <div class="form-field"><label for="projectName">Project name</label><input id="projectName" placeholder="e.g. Save for a truck"></div>
+        <div class="form-field"><label for="projectDescription">Goal or details</label><textarea id="projectDescription" placeholder="What are you trying to accomplish?"></textarea></div>
+        <button class="primary" id="createProjectButton">Create project</button>
+      </div>
+
+      <div class="section-head"><h2>Your projects</h2></div>
+      <div class="card" id="projectList"></div>
+
+      <div id="projectDetail" hidden>
+        <div class="section-head"><h2 id="projectDetailTitle">Project details</h2><button class="secondary" id="backProjects">Back</button></div>
+        <div class="card">
+          <div class="form-field"><label for="detailDescription">Details</label><textarea id="detailDescription"></textarea></div>
+          <div class="form-field"><label for="targetAmount">Target amount (optional)</label><input id="targetAmount" type="number" min="0" step="0.01"></div>
+          <div class="form-field"><label for="savedAmount">Amount saved or completed</label><input id="savedAmount" type="number" min="0" step="0.01"></div>
+          <div id="projectProgress"></div>
+          <div class="button-row">
+            <button class="primary" id="saveProjectDetails">Save changes</button>
+            <button class="secondary" id="projectChatButton">Open project chat</button>
+            <button class="secondary" id="projectNoteButton">Add note</button>
+            <button class="danger" id="deleteProjectButton">Delete project</button>
+          </div>
+        </div>
+        <div class="section-head"><h2>Related conversations</h2></div>
+        <div class="card" id="projectChats"></div>
+        <div class="section-head"><h2>Project notes</h2></div>
+        <div class="card" id="projectNotes"></div>
+      </div>
+    </section>
+
+    <section class="page" id="page-library">
+      <div class="eyebrow">YOUR KNOWLEDGE BASE</div>
+      <h1>Life Library</h1>
+      <p class="muted">Save useful information and decisions to find them again later.</p>
+      <div class="card">
+        <div class="form-field"><label for="noteTitle">Title</label><input id="noteTitle" placeholder="e.g. Truck purchase budget"></div>
+        <div class="form-field"><label for="noteContent">Information</label><textarea id="noteContent" placeholder="Write down what you want to remember..."></textarea></div>
+        <div class="form-field"><label for="noteProject">Project</label><select id="noteProject"><option value="">No project</option></select></div>
+        <button class="primary" id="saveNoteForm">Save note</button>
+      </div>
+      <div class="section-head"><h2>Saved information</h2></div>
+      <input class="search" id="librarySearch" placeholder="Search your library...">
+      <div class="card" id="libraryList" style="margin-top:12px"></div>
+    </section>
+
+    <section class="page" id="page-actions">
+      <div class="eyebrow">FROM ADVICE TO ACTION</div>
+      <h1>Action Centre</h1>
+      <p class="muted">Track the practical steps that move your goals forward.</p>
+      <div class="card">
+        <div class="form-field"><label for="actionTitle">Action</label><input id="actionTitle" placeholder="e.g. Review monthly expenses"></div>
+        <div class="form-field"><label for="actionProject">Project</label><select id="actionProject"><option value="">No project</option></select></div>
+        <div class="form-field"><label for="actionDue">Due date (optional)</label><input id="actionDue" type="date"></div>
+        <button class="primary" id="createActionForm">Add action</button>
+      </div>
+      <div class="section-head"><h2>Your action items</h2></div>
+      <div class="card" id="actionList"></div>
+    </section>
+
+  </div>
+</main>
 </div>
 
 <script>
+"use strict";
+
 const API_URL = "https://lifewise-8zc7.onrender.com/api/chat";
-
-const sidebar = document.getElementById("sidebar");
-const menuButton = document.getElementById("menuButton");
-const pageTitle = document.getElementById("pageTitle");
-const chatArea = document.getElementById("chatArea");
-const welcome = document.getElementById("welcome");
-const messages = document.getElementById("messages");
-const messageInput = document.getElementById("messageInput");
-const sendButton = document.getElementById("sendButton");
-
-let currentCategory = "general";
-let currentConversation = null;
+const STORAGE_KEY = "lifewise_v1_data";
 
 const categoryInfo = {
   general: {
     title: "LifeWise",
-    prompt: "You are LifeWise, a practical everyday problem-solving assistant. Help the user with their question and ask useful follow-up questions when needed."
+    prompt: "You are LifeWise, a practical personal problem-solving assistant. Help turn questions into useful decisions, projects, plans, and actions."
   },
   budget: {
     title: "Money & Budget",
-    prompt: "You are LifeWise's personal budgeting assistant. Help the user understand income, expenses, bills, savings, and spending. Ask for the information you need naturally, one step at a time. Help create a practical budget based on their real circumstances."
+    prompt: "You are a personal budgeting specialist. Help with income, expenses, bills, debt, savings, and goals. Ask one question at a time. Distinguish gross income from take-home income and never assume missing numbers."
   },
   financing: {
     title: "Financing",
-    prompt: "You are LifeWise's financing assistant. Help the user understand financing options, monthly payments, interest rates, loan terms, and affordability. Explain trade-offs clearly and never invent approval terms or guarantee loan approval."
+    prompt: "You are a financing specialist. Explain loan options, interest, monthly payments, total cost, and affordability. Never invent terms or guarantee approval."
   },
   career: {
     title: "Career & Work",
-    prompt: "You are LifeWise's career assistant. Help with career planning, workplace problems, professional communication, resumes, interviews, and career development. Give practical, personalized advice."
+    prompt: "You are a career specialist. Help with workplace problems, career planning, resumes, interviews, and professional communication."
   },
   shopping: {
     title: "Shopping Decisions",
-    prompt: "You are LifeWise's shopping decision assistant. Help the user compare products, prices, features, quality, and value. Ask what matters most and explain the trade-offs before recommending an option."
+    prompt: "You are a shopping decision specialist. Compare product features, quality, costs, and trade-offs. Never invent current prices or specifications."
   },
   diy: {
     title: "DIY & Home",
-    prompt: "You are LifeWise's home improvement assistant. Help with repairs, renovation planning, materials, tools, costs, and project steps. Consider the user's skill level, budget, climate, and safety. Clearly identify when a licensed professional or local code check is needed."
+    prompt: "You are a home improvement specialist. Help with repairs, renovations, materials, costs, and steps. Prioritize safety and local building codes."
   },
   planning: {
     title: "Planning & Goals",
-    prompt: "You are LifeWise's planning assistant. Help the user turn goals into realistic action plans, milestones, and next steps. Keep plans organized and adapt them as circumstances change."
+    prompt: "You are a planning specialist. Turn goals into practical plans, milestones, timelines, and next steps."
   },
   everyday: {
     title: "Everyday Problems",
-    prompt: "You are LifeWise's everyday problem-solving assistant. Help the user work through practical challenges, organize options, and decide what to do next. Be clear, calm, and solution-oriented."
+    prompt: "You are an everyday problem-solving specialist. Help evaluate options and find practical next steps."
   }
 };
 
-function loadConversations() {
+function emptyData() {
+  return { projects: [], notes: [], actions: [], conversations: [] };
+}
+
+function loadData() {
   try {
-    return JSON.parse(localStorage.getItem("lifewise_conversations") || "[]");
+    const d = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+    if (!d) return emptyData();
+    return {
+      projects: Array.isArray(d.projects) ? d.projects : [],
+      notes: Array.isArray(d.notes) ? d.notes : [],
+      actions: Array.isArray(d.actions) ? d.actions : [],
+      conversations: Array.isArray(d.conversations) ? d.conversations : []
+    };
   } catch {
-    return [];
+    return emptyData();
   }
 }
 
-let conversations = loadConversations();
+let data = loadData();
+let currentPage = "dashboard";
+let currentCategory = "general";
+let currentConversationId = null;
+let currentProjectId = null;
+let busy = false;
 
-function saveConversations() {
-  localStorage.setItem(
-    "lifewise_conversations",
-    JSON.stringify(conversations)
-  );
+const $ = id => document.getElementById(id);
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;",
+    '"': "&quot;", "'": "&#39;"
+  })[c]);
 }
 
-function createConversation(category) {
-  const conversation = {
-    id: Date.now().toString(),
-    category,
-    title: categoryInfo[category]?.title || "LifeWise",
+function saveData() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    updateOverview();
+  } catch (e) {
+    alert("LifeWise could not save. Your browser storage may be full.");
+  }
+}
+
+function projectById(id) {
+  return data.projects.find(p => p.id === id);
+}
+
+function conversationById(id) {
+  return data.conversations.find(c => c.id === id);
+}
+
+function currentConversation() {
+  return conversationById(currentConversationId);
+}
+
+function toast(message) {
+  const old = $("toastMessage");
+  if (old) old.remove();
+  const el = document.createElement("div");
+  el.id = "toastMessage";
+  el.textContent = message;
+  el.style.cssText = "position:fixed;bottom:20px;right:20px;background:#17243b;color:white;padding:13px 17px;border-radius:10px;z-index:100;font-size:13px";
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2600);
+}
+
+function updateOverview() {
+  $("projectCount").textContent = data.projects.length;
+  $("noteCount").textContent = data.notes.length;
+  $("actionCount").textContent = data.actions.filter(a => !a.done).length;
+}
+
+function showPage(page) {
+  currentPage = page;
+  document.querySelectorAll(".page").forEach(el => {
+    el.classList.toggle("active", el.id === "page-" + page);
+  });
+
+  document.querySelectorAll(".nav").forEach(el => {
+    el.classList.toggle("active",
+      el.dataset.page === page ||
+      (page === "chat" && el.dataset.category === currentCategory));
+  });
+
+  const titles = {
+    dashboard: "Your Dashboard",
+    chat: categoryInfo[currentCategory].title,
+    projects: "My Projects",
+    library: "Life Library",
+    actions: "Action Centre"
+  };
+
+  $("pageTitle").textContent = titles[page] || "LifeWise";
+  $("sidebar").classList.remove("open");
+
+  if (page === "dashboard") renderRecentProjects();
+  if (page === "projects") renderProjects();
+  if (page === "library") renderLibrary();
+  if (page === "actions") renderActions();
+
+  updateOverview();
+}
+
+function startConversation(category, projectId = null) {
+  currentCategory = categoryInfo[category] ? category : "general";
+  currentProjectId = projectId;
+
+  const c = {
+    id: uid(),
+    category: currentCategory,
+    title: categoryInfo[currentCategory].title,
+    projectId: projectId,
     messages: [],
+    createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString()
   };
 
-  conversations.unshift(conversation);
-  saveConversations();
-  return conversation;
-}
-
-function setActiveNav(category) {
-  document.querySelectorAll(".nav").forEach(button => {
-    button.classList.toggle(
-      "active",
-      button.dataset.category === category
-    );
-  });
-}
-
-function addMessage(role, content) {
-  const element = document.createElement("div");
-  element.className = "message " + (role === "user" ? "user" : "assistant");
-  element.textContent = content;
-  messages.appendChild(element);
-  chatArea.scrollTop = chatArea.scrollHeight;
-}
-
-function renderMessages() {
-  messages.replaceChildren();
-  if (!currentConversation) return;
-
-  currentConversation.messages.forEach(message => {
-    addMessage(message.role, message.content);
-  });
+  data.conversations.unshift(c);
+  currentConversationId = c.id;
+  saveData();
+  showPage("chat");
+  renderChat();
 }
 
 function openCategory(category) {
-  currentCategory = category;
-  setActiveNav(category);
-  welcome.style.display = "none";
-  messages.replaceChildren();
-
-  if (category === "projects") {
-    currentConversation = null;
-    renderProjects();
-    pageTitle.textContent = "My Projects";
-    messageInput.placeholder = "Ask LifeWise anything...";
-    sidebar.classList.remove("open");
-    return;
-  }
-
-  const info = categoryInfo[category] || categoryInfo.general;
-  pageTitle.textContent = info.title;
-  messageInput.placeholder = category === "general"
-    ? "Ask LifeWise anything..."
-    : "What would you like help with?";
-
-  currentConversation = createConversation(category);
-
-  const greeting = category === "general"
-    ? "Hi! I'm LifeWise. What's on your mind today?"
-    : "Welcome to " + info.title + ". I'll help you work through this step by step. What would you like to accomplish?";
-
-  addMessage("assistant", greeting);
-  currentConversation.messages.push({
-    role: "assistant",
-    content: greeting
-  });
-
-  saveConversations();
-  sidebar.classList.remove("open");
+  startConversation(category);
 }
 
-function renderProjects() {
-  messages.replaceChildren();
+function renderChat() {
+  const info = categoryInfo[currentCategory] || categoryInfo.general;
+  $("chatHeading").textContent = info.title;
+  $("chatEyebrow").textContent = "SPECIALIZED LIFEWISE ASSISTANT";
+  $("chatDescription").textContent =
+    currentProjectId && projectById(currentProjectId)
+      ? "Project: " + projectById(currentProjectId).name
+      : "Your conversation is saved on this device.";
 
-  const heading = document.createElement("h2");
-  heading.textContent = "My Projects";
-  messages.appendChild(heading);
+  const container = $("chatMessages");
+  container.replaceChildren();
 
-  const description = document.createElement("p");
-  description.textContent = "Your saved conversations and ongoing work, all in one place.";
-  messages.appendChild(description);
+  const c = currentConversation();
+  if (!c) return;
 
-  if (!conversations.length) {
-    const empty = document.createElement("p");
-    empty.textContent = "Your conversations will appear here as you start using LifeWise.";
-    messages.appendChild(empty);
-    return;
+  if (!c.messages.length) {
+    const welcome = document.createElement("div");
+    welcome.className = "message assistant";
+    const label = document.createElement("div");
+    label.className = "message-label";
+    label.textContent = "LIFEWISE";
+    const body = document.createElement("div");
+    body.className = "message-body";
+    body.textContent = currentCategory === "general"
+      ? "Hi! I'm LifeWise. What's on your mind today?"
+      : "Welcome to " + info.title + ". I'll help you work through this step by step. What would you like to accomplish?";
+    welcome.append(label, body);
+    container.appendChild(welcome);
   }
 
-  conversations.forEach(conversation => {
-    const card = document.createElement("div");
-    card.className = "project";
-
-    const title = document.createElement("strong");
-    title.textContent =
-      conversation.messages.find(m => m.role === "user")?.content?.slice(0, 65)
-      || conversation.title;
-
-    const details = document.createElement("p");
-    details.textContent = conversation.title;
-
-    const date = document.createElement("small");
-    date.textContent = new Date(conversation.updatedAt).toLocaleString();
-
-    card.append(title, details, date);
-
-    card.addEventListener("click", () => {
-      currentConversation = conversation;
-      currentCategory = conversation.category;
-      setActiveNav(currentCategory);
-      pageTitle.textContent = conversation.title;
-      welcome.style.display = "none";
-      renderMessages();
-      sidebar.classList.remove("open");
-    });
-
-    messages.appendChild(card);
+  c.messages.forEach(m => {
+    const el = document.createElement("div");
+    el.className = "message " + (m.role === "user" ? "user" : "assistant");
+    const label = document.createElement("div");
+    label.className = "message-label";
+    label.textContent = m.role === "user" ? "YOU" : "LIFEWISE";
+    const body = document.createElement("div");
+    body.className = "message-body";
+    body.textContent = m.content;
+    el.append(label, body);
+    container.appendChild(el);
   });
 }
 
-async function sendMessage() {
-  const text = messageInput.value.trim();
-  if (!text || sendButton.disabled) return;
+async function sendMessage(textOverride) {
+  if (busy) return;
 
-  if (currentCategory === "projects") {
-    currentCategory = "general";
-    currentConversation = null;
-    setActiveNav("general");
-    pageTitle.textContent = categoryInfo.general.title;
+  const input = $("chatInput");
+  const text = (textOverride ?? input.value).trim();
+  if (!text) return;
+
+  let c = currentConversation();
+
+  if (!c) {
+    startConversation(currentCategory);
+    c = currentConversation();
   }
 
-  if (!currentConversation) {
-    currentConversation = createConversation(currentCategory);
-  }
+  c.messages.push({ role: "user", content: text });
+  c.updatedAt = new Date().toISOString();
+  saveData();
 
-  welcome.style.display = "none";
-  addMessage("user", text);
-
-  currentConversation.messages.push({
-    role: "user",
-    content: text
-  });
-
-  currentConversation.updatedAt = new Date().toISOString();
-  saveConversations();
-
-  messageInput.value = "";
-  sendButton.disabled = true;
-  sendButton.textContent = "...";
+  input.value = "";
+  renderChat();
 
   const loading = document.createElement("div");
   loading.className = "message assistant";
   loading.textContent = "LifeWise is thinking...";
-  messages.appendChild(loading);
+  $("chatMessages").appendChild(loading);
+
+  busy = true;
+  $("chatSend").disabled = true;
+  $("chatSend").textContent = "...";
 
   try {
     const response = await fetch(API_URL, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         input: text,
         category: currentCategory,
-        instructions:
-          categoryInfo[currentCategory]?.prompt ||
-          categoryInfo.general.prompt,
-        conversation: currentConversation.messages
+        instructions: categoryInfo[currentCategory].prompt,
+        conversation: c.messages,
+        goal: currentProjectId && projectById(currentProjectId)
+          ? projectById(currentProjectId).description
+          : ""
       })
     });
 
-    const data = await response.json();
+    const result = await response.json();
 
     if (!response.ok) {
-      throw new Error(
-        data.error || data.message || "The request failed."
-      );
+      throw new Error(result.error || "Server error " + response.status);
     }
 
-    loading.remove();
+    const answer = result.answer || result.output || result.reply;
 
-    const answer =
-      data.output ||
-      data.answer ||
-      data.reply ||
-      data.message ||
-      "I received your request, but no answer was returned.";
+    if (!answer) throw new Error("The server returned no answer.");
 
-    addMessage("assistant", answer);
+    c.messages.push({ role: "assistant", content: answer });
+    c.updatedAt = new Date().toISOString();
 
-    currentConversation.messages.push({
-      role: "assistant",
-      content: answer
-    });
+    if (currentProjectId) {
+      const p = projectById(currentProjectId);
+      if (p) p.updatedAt = c.updatedAt;
+    }
 
-    currentConversation.updatedAt = new Date().toISOString();
-    saveConversations();
+    saveData();
+    renderChat();
 
   } catch (error) {
-    loading.remove();
-
-    addMessage(
-      "assistant",
-      "I couldn't connect to LifeWise right now. " +
-      error.message +
-      " Please check the server configuration and try again."
-    );
+    console.error("LifeWise request failed:", error);
+    loading.textContent = "LifeWise couldn't connect: " + error.message;
+    toast("The request failed. Check your Render logs if this continues.");
   } finally {
-    sendButton.disabled = false;
-    sendButton.textContent = "Send";
-    messageInput.focus();
+    busy = false;
+    $("chatSend").disabled = false;
+    $("chatSend").textContent = "Send";
   }
 }
 
-document.querySelectorAll(".nav").forEach(button => {
-  button.addEventListener("click", () => {
-    openCategory(button.dataset.category);
+function renderRecentProjects() {
+  const el = $("recentProjects");
+  el.replaceChildren();
+
+  const recent = data.projects.slice(0, 4);
+
+  if (!recent.length) {
+    el.innerHTML = '<div class="empty">Your projects will appear here. Create a project to start organizing your goals, notes, and conversations.</div>';
+    return;
+  }
+
+  recent.forEach(p => {
+    const row = document.createElement("div");
+    row.className = "list-item";
+    row.innerHTML =
+      '<div class="item-title">' + esc(p.name) + '</div>' +
+      '<div class="item-meta">' + esc(p.description || "No description yet") + '</div>' +
+      '<div class="button-row"><button class="secondary" data-open-project="' + esc(p.id) + '">Open project</button></div>';
+    el.appendChild(row);
   });
+}
+
+function renderProjects() {
+  const list = $("projectList");
+  list.replaceChildren();
+
+  if (!data.projects.length) {
+    list.innerHTML = '<div class="empty">No projects yet. Create one above to organize a goal, renovation, budget, purchase, or anything else you're working on.</div>';
+    $("projectDetail").hidden = true;
+    return;
+  }
+
+  data.projects.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "list-item";
+    card.innerHTML =
+      '<div class="item-title">' + esc(p.name) + '</div>' +
+      '<div class="item-meta">' + esc(p.description || "No details added") + '</div>' +
+      '<div class="item-meta">' +
+        data.conversations.filter(c => c.projectId === p.id).length + ' conversations · ' +
+        data.notes.filter(n => n.projectId === p.id).length + ' notes · ' +
+        data.actions.filter(a => a.projectId === p.id && !a.done).length + ' open actions' +
+      '</div>' +
+      '<div class="button-row"><button class="secondary" data-open-project="' + esc(p.id) + '">Open</button></div>';
+    list.appendChild(card);
+  });
+
+  if (currentProjectId && projectById(currentProjectId)) {
+    renderProjectDetail(currentProjectId);
+  } else {
+    $("projectDetail").hidden = true;
+  }
+}
+
+function renderProjectDetail(id) {
+  const p = projectById(id);
+  if (!p) return;
+
+  currentProjectId = id;
+  $("projectDetail").hidden = false;
+  $("projectDetailTitle").textContent = p.name;
+  $("detailDescription").value = p.description || "";
+  $("targetAmount").value = p.target ?? "";
+  $("savedAmount").value = p.saved ?? "";
+
+  const target = Number(p.target) || 0;
+  const saved = Number(p.saved) || 0;
+  const percent = target > 0 ? Math.min(100, Math.round(saved / target * 100)) : 0;
+
+  $("projectProgress").innerHTML = target > 0
+    ? '<p class="small">Progress: ' + percent + '% (' +
+      esc(saved.toLocaleString()) + ' of ' + esc(target.toLocaleString()) + ')</p>' +
+      '<div class="progress"><div style="width:' + percent + '%"></div></div>'
+    : "";
+
+  const chats = $("projectChats");
+  chats.replaceChildren();
+  const related = data.conversations.filter(c => c.projectId === id);
+
+  if (!related.length) {
+    chats.innerHTML = '<div class="empty">Conversations you link to this project will appear here.</div>';
+  } else {
+    related.forEach(c => {
+      const row = document.createElement("div");
+      row.className = "list-item";
+      const lastUser = [...c.messages].reverse().find(m => m.role === "user");
+      row.innerHTML =
+        '<div class="item-title">' + esc(c.title) + '</div>' +
+        '<div class="item-meta">' + esc(lastUser?.content || "New conversation") + '</div>' +
+        '<div class="button-row"><button class="secondary" data-open-chat="' + esc(c.id) + '">Open conversation</button></div>';
+      chats.appendChild(row);
+    });
+  }
+
+  const notes = $("projectNotes");
+  notes.replaceChildren();
+  const projectNotes = data.notes.filter(n => n.projectId === id);
+
+  if (!projectNotes.length) {
+    notes.innerHTML = '<div class="empty">Notes saved to this project will appear here.</div>';
+  } else {
+    projectNotes.forEach(n => {
+      const row = document.createElement("div");
+      row.className = "list-item";
+      row.innerHTML = '<div class="item-title">' + esc(n.title) + '</div><div class="item-meta">' + esc(n.content) + '</div>';
+      notes.appendChild(row);
+    });
+  }
+}
+
+function createProject() {
+  const name = $("projectName").value.trim();
+  const description = $("projectDescription").value.trim();
+
+  if (!name) {
+    alert("Please enter a project name.");
+    return;
+  }
+
+  const p = {
+    id: uid(),
+    name,
+    description,
+    target: null,
+    saved: null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+
+  data.projects.unshift(p);
+  $("projectName").value = "";
+  $("projectDescription").value = "";
+  currentProjectId = p.id;
+  saveData();
+  renderProjects();
+  updateProjectSelects();
+  renderRecentProjects();
+  toast("Project created.");
+}
+
+function saveProjectDetails() {
+  const p = projectById(currentProjectId);
+  if (!p) return;
+
+  p.description = $("detailDescription").value.trim();
+  p.target = $("targetAmount").value === "" ? null : Number($("targetAmount").value);
+  p.saved = $("savedAmount").value === "" ? null : Number($("savedAmount").value);
+  p.updatedAt = new Date().toISOString();
+
+  saveData();
+  renderProjectDetail(p.id);
+  renderProjects();
+  toast("Project updated.");
+}
+
+function deleteProject() {
+  const p = projectById(currentProjectId);
+  if (!p) return;
+
+  if (!confirm('Delete "' + p.name + '"? Its notes and conversations will be kept, but unlinked from the project.')) return;
+
+  data.projects = data.projects.filter(x => x.id !== p.id);
+  data.notes.forEach(n => { if (n.projectId === p.id) n.projectId = null; });
+  data.actions.forEach(a => { if (a.projectId === p.id) a.projectId = null; });
+  data.conversations.forEach(c => { if (c.projectId === p.id) c.projectId = null; });
+
+  currentProjectId = null;
+  saveData();
+  updateProjectSelects();
+  renderProjects();
+  renderRecentProjects();
+  toast("Project deleted.");
+}
+
+function updateProjectSelects() {
+  ["noteProject", "actionProject"].forEach(id => {
+    const select = $(id);
+    const previous = select.value;
+    select.replaceChildren(new Option("No project", ""));
+
+    data.projects.forEach(p => {
+      select.add(new Option(p.name, p.id));
+    });
+
+    if (projectById(previous)) select.value = previous;
+  });
+}
+
+function renderLibrary() {
+  updateProjectSelects();
+
+  const search = $("librarySearch").value.trim().toLowerCase();
+  const list = $("libraryList");
+  list.replaceChildren();
+
+  const notes = data.notes.filter(n =>
+    (n.title + " " + n.content).toLowerCase().includes(search)
+  );
+
+  if (!notes.length) {
+    list.innerHTML = '<div class="empty">No matching notes yet. Save important information so you can find it again.</div>';
+    return;
+  }
+
+  notes.forEach(n => {
+    const p = projectById(n.projectId);
+    const row = document.createElement("div");
+    row.className = "list-item";
+    row.innerHTML =
+      '<div class="item-title">' + esc(n.title) + '</div>' +
+      '<div class="item-meta">' + esc(p ? "Project: " + p.name : "Life Library") + ' · ' + esc(new Date(n.createdAt).toLocaleDateString()) + '</div>' +
+      '<p>' + esc(n.content) + '</p>' +
+      '<div class="button-row"><button class="danger" data-delete-note="' + esc(n.id) + '">Delete note</button></div>';
+    list.appendChild(row);
+  });
+}
+
+function saveNote(title, content, projectId) {
+  if (!title.trim() || !content.trim()) {
+    alert("Please enter both a title and some information.");
+    return false;
+  }
+
+  data.notes.unshift({
+    id: uid(),
+    title: title.trim(),
+    content: content.trim(),
+    projectId: projectById(projectId) ? projectId : null,
+    createdAt: new Date().toISOString()
+  });
+
+  saveData();
+  updateProjectSelects();
+  renderLibrary();
+  renderProjects();
+  toast("Saved to Life Library.");
+  return true;
+}
+
+function renderActions() {
+  updateProjectSelects();
+
+  const list = $("actionList");
+  list.replaceChildren();
+
+  if (!data.actions.length) {
+    list.innerHTML = '<div class="empty">No actions yet. Add a next step above to start making progress.</div>';
+    return;
+  }
+
+  const sorted = [...data.actions].sort((a, b) => Number(a.done) - Number(b.done));
+
+  sorted.forEach(a => {
+    const p = projectById(a.projectId);
+    const row = document.createElement("div");
+    row.className = "check-row" + (a.done ? " done" : "");
+
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = Boolean(a.done);
+    checkbox.dataset.toggleAction = a.id;
+
+    const body = document.createElement("div");
+    body.style.flex = "1";
+    body.innerHTML =
+      '<span>' + esc(a.title) + '</span>' +
+      '<div class="item-meta">' + esc(p ? p.name : "No project") +
+      (a.due ? ' · Due ' + esc(a.due) : "") + '</div>';
+
+    const del = document.createElement("button");
+    del.className = "danger";
+    del.textContent = "Delete";
+    del.dataset.deleteAction = a.id;
+
+    row.append(checkbox, body, del);
+    list.appendChild(row);
+  });
+}
+
+function createAction(title, projectId, due) {
+  if (!title.trim()) {
+    alert("Please enter an action.");
+    return false;
+  }
+
+  data.actions.unshift({
+    id: uid(),
+    title: title.trim(),
+    projectId: projectById(projectId) ? projectId : null,
+    due: due || "",
+    done: false,
+    createdAt: new Date().toISOString()
+  });
+
+  saveData();
+  renderActions();
+  renderProjects();
+  toast("Action added.");
+  return true;
+}
+
+function saveCurrentNote() {
+  const c = currentConversation();
+  if (!c || !c.messages.length) {
+    alert("Start a conversation before saving a note.");
+    return;
+  }
+
+  const lastAnswer = [...c.messages].reverse().find(m => m.role === "assistant");
+  const lastQuestion = [...c.messages].reverse().find(m => m.role === "user");
+
+  $("noteTitle").value = lastQuestion ? lastQuestion.content.slice(0, 70) : c.title;
+  $("noteContent").value = lastAnswer ? lastAnswer.content : "";
+  $("noteProject").value = c.projectId || "";
+  showPage("library");
+  $("noteTitle").focus();
+}
+
+function openConversation(id) {
+  const c = conversationById(id);
+  if (!c) return;
+
+  currentConversationId = c.id;
+  currentCategory = categoryInfo[c.category] ? c.category : "general";
+  currentProjectId = c.projectId || null;
+
+  showPage("chat");
+  renderChat();
+}
+
+function linkConversationToProject() {
+  const c = currentConversation();
+  if (!c) {
+    alert("Start a conversation first.");
+    return;
+  }
+
+  if (!data.projects.length) {
+    showPage("projects");
+    $("projectName").focus();
+    alert("Create a project first, then link your conversation.");
+    return;
+  }
+
+  const choices = data.projects.map((p, i) => (i + 1) + ". " + p.name).join("\n");
+  const answer = prompt("Enter the number of the project to link this conversation to:\n\n" + choices);
+  if (answer === null) return;
+
+  const index = Number(answer) - 1;
+  if (!Number.isInteger(index) || index < 0 || index >= data.projects.length) {
+    alert("That project number is not valid.");
+    return;
+  }
+
+  c.projectId = data.projects[index].id;
+  currentProjectId = c.projectId;
+  saveData();
+  renderChat();
+  toast("Conversation linked to project.");
+}
+
+function createActionFromChat() {
+  const c = currentConversation();
+  const lastQuestion = c && [...c.messages].reverse().find(m => m.role === "user");
+
+  $("actionTitle").value = lastQuestion ? lastQuestion.content.slice(0, 100) : "";
+  $("actionProject").value = c?.projectId || "";
+  showPage("actions");
+  $("actionTitle").focus();
+}
+
+document.querySelectorAll("[data-page]").forEach(button => {
+  button.addEventListener("click", () => showPage(button.dataset.page));
 });
 
-menuButton.addEventListener("click", () => {
-  if (window.innerWidth <= 700) {
-    sidebar.classList.toggle("open");
-  } else {
-    sidebar.classList.toggle("closed");
+document.querySelectorAll("[data-category]").forEach(button => {
+  button.addEventListener("click", () => openCategory(button.dataset.category));
+});
+
+document.querySelectorAll("[data-category-card]").forEach(card => {
+  card.addEventListener("click", () => openCategory(card.dataset.categoryCard));
+});
+
+$("menuButton").addEventListener("click", () => {
+  $("sidebar").classList.toggle("open");
+});
+
+$("homeSend").addEventListener("click", () => {
+  const text = $("homeInput").value.trim();
+  if (!text) {
+    openCategory("general");
+    return;
+  }
+  startConversation("general");
+  $("homeInput").value = "";
+  sendMessage(text);
+});
+
+$("homeInput").addEventListener("keydown", e => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    $("homeSend").click();
   }
 });
 
-sendButton.addEventListener("click", sendMessage);
+$("chatSend").addEventListener("click", () => sendMessage());
 
-messageInput.addEventListener("keydown", event => {
-  if (event.key === "Enter" && !event.shiftKey) {
-    event.preventDefault();
+$("chatInput").addEventListener("keydown", e => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
     sendMessage();
   }
 });
 
-openCategory("general");
+$("newChatButton").addEventListener("click", () => startConversation(currentCategory));
+$("createProjectButton").addEventListener("click", createProject);
+$("saveProjectDetails").addEventListener("click", saveProjectDetails);
+$("deleteProjectButton").addEventListener("click", deleteProject);
+$("backProjects").addEventListener("click", () => {
+  currentProjectId = null;
+  renderProjects();
+});
+$("saveNoteButton").addEventListener("click", saveCurrentNote);
+$("projectNoteButton").addEventListener("click", () => {
+  $("noteTitle").value = "";
+  $("noteContent").value = "";
+  $("noteProject").value = currentProjectId || "";
+  showPage("library");
+});
+$("saveNoteForm").addEventListener("click", () => {
+  if (saveNote($("noteTitle").value, $("noteContent").value, $("noteProject").value)) {
+    $("noteTitle").value = "";
+    $("noteContent").value = "";
+  }
+});
+$("librarySearch").addEventListener("input", renderLibrary);
+
+$("createActionButton").addEventListener("click", createActionFromChat);
+
+$("createActionForm").addEventListener("click", () => {
+  if (createAction($("actionTitle").value, $("actionProject").value, $("actionDue").value)) {
+    $("actionTitle").value = "";
+    $("actionDue").value = "";
+  }
+});
+
+$("linkProjectButton").addEventListener("click", linkConversationToProject);
+
+$("projectChatButton").addEventListener("click", () => {
+  if (projectById(currentProjectId)) startConversation("general", currentProjectId);
+});
+
+document.body.addEventListener("click", e => {
+  const openProject = e.target.closest("[data-open-project]");
+  if (openProject) {
+    renderProjectDetail(openProject.dataset.openProject);
+    return;
+  }
+
+  const openChat = e.target.closest("[data-open-chat]");
+  if (openChat) {
+    openConversation(openChat.dataset.openChat);
+    return;
+  }
+
+  const deleteNote = e.target.closest("[data-delete-note]");
+  if (deleteNote) {
+    if (confirm("Delete this note?")) {
+      data.notes = data.notes.filter(n => n.id !== deleteNote.dataset.deleteNote);
+      saveData();
+      renderLibrary();
+    }
+    return;
+  }
+
+  const deleteAction = e.target.closest("[data-delete-action]");
+  if (deleteAction) {
+    if (confirm("Delete this action?")) {
+      data.actions = data.actions.filter(a => a.id !== deleteAction.dataset.deleteAction);
+      saveData();
+      renderActions();
+    }
+  }
+});
+
+document.body.addEventListener("change", e => {
+  const checkbox = e.target.closest("[data-toggle-action]");
+  if (checkbox) {
+    const action = data.actions.find(a => a.id === checkbox.dataset.toggleAction);
+    if (action) {
+      action.done = checkbox.checked;
+      saveData();
+      renderActions();
+    }
+  }
+});
+
+$("projectChatButton").addEventListener("click", () => {
+  if (projectById(currentProjectId)) startConversation("general", currentProjectId);
+});
+
+updateOverview();
+renderRecentProjects();
+updateProjectSelects();
 </script>
 </body>
 </html>
