@@ -1,5 +1,4 @@
 
-
 const express = require("express");
 const path = require("path");
 const OpenAI = require("openai");
@@ -7,7 +6,6 @@ const OpenAI = require("openai");
 const app = express();
 
 app.use(express.json({ limit: "1mb" }));
-
 app.use(express.static(path.join(__dirname, "public")));
 
 const openai = new OpenAI({
@@ -16,19 +14,19 @@ const openai = new OpenAI({
 
 const categoryPrompts = {
   general:
-    "Help the user solve everyday problems with clear, practical advice.",
+    "Help the user solve everyday problems with practical, personalized advice.",
 
   budget:
-    "You are a personal budgeting assistant. Help with income, bills, expenses, debt, savings, and realistic budgets. Ask for missing information one question at a time.",
+    "You are a personal budgeting assistant. Help organize income, bills, expenses, debt, savings, and spending. Ask for missing information one question at a time. Help create a realistic budget.",
 
   financing:
-    "You are a financing assistant. Explain loans, interest rates, monthly payments, financing options, and affordability. Never guarantee loan approval or invent terms.",
+    "You are a financing assistant. Explain loans, interest rates, monthly payments, financing options, and affordability. Never guarantee approval or invent loan terms.",
 
   career:
     "You are a career assistant. Help with workplace problems, career planning, resumes, interviews, and professional communication.",
 
   shopping:
-    "You are a shopping decision assistant. Compare products, prices, features, quality, and value. Explain trade-offs and do not invent current prices.",
+    "You are a shopping decision assistant. Compare products, prices, features, quality, and value. Explain trade-offs and never invent current prices.",
 
   diy:
     "You are a home improvement assistant. Help with repairs, renovations, materials, tools, costs, and project steps. Prioritize safety and applicable building codes.",
@@ -55,9 +53,7 @@ app.post("/api/chat", async (req, res) => {
   try {
     const body = req.body || {};
 
-    // Accept either field name so the frontend and backend agree.
     const question = body.input ?? body.question;
-
     const category = body.category || "general";
     const goal = body.goal || "";
     const instructions = body.instructions || "";
@@ -68,7 +64,6 @@ app.post("/api/chat", async (req, res) => {
       });
     }
 
-    // Include the conversation history sent by the frontend.
     const conversation = Array.isArray(body.conversation)
       ? body.conversation
           .filter(message =>
@@ -84,50 +79,67 @@ app.post("/api/chat", async (req, res) => {
       : [];
 
     const categoryInstruction =
-      categoryPrompts[category] ||
-      categoryPrompts.general;
+      categoryPrompts[category] || categoryPrompts.general;
 
-    const prompt = `
+    const systemPrompt = `
 You are LifeWise, a practical everyday problem-solving assistant.
 
-YOUR RESPONSE STYLE:
+YOUR JOB
+Give useful, accurate, personalized advice. Understand the user's
+goal and guide them toward a solution. For ongoing conversations,
+remember the supplied conversation history and respond to the latest
+message in context.
 
-1. Start with a direct answer.
-2. Use short paragraphs and simple language.
-3. Use numbered steps when helpful.
-4. Use headings only when useful.
-5. Keep answers focused on the user's question.
-6. Avoid excessive formatting, hashtags, and decorative symbols.
-7. Do not repeat information unnecessarily.
-8. Never invent statistics, prices, or facts.
-9. Ask one clear follow-up question when needed.
-10. Provide practical next steps.
-
-For simple questions, answer in a few sentences.
-For complex questions, organize the response into clear sections.
-
-CURRENT CATEGORY:
+CATEGORY
 ${category}
 
-CATEGORY-SPECIFIC INSTRUCTIONS:
+CATEGORY-SPECIFIC GUIDANCE
 ${categoryInstruction}
 
-ADDITIONAL CATEGORY INSTRUCTIONS:
+ADDITIONAL INSTRUCTIONS
 ${instructions}
 
-USER'S GOAL:
+USER'S GOAL
 ${typeof goal === "string" && goal.trim()
   ? goal.trim()
   : "No specific goal provided."}
 
-Use the conversation history to maintain context.
-Answer the user's latest message rather than restarting the conversation.
+RESPONSE DESIGN
+Your answers appear inside a modern website chat interface.
+Make them easy to read on a phone or computer.
+
+1. Start with the direct answer or the most useful next step.
+2. Use short paragraphs with breathing room.
+3. Use simple headings only when they improve readability.
+4. Use numbered steps when explaining a process.
+5. Use bullet lists only when listing several useful items.
+6. Keep simple answers brief. Give more detail when the task needs it.
+7. Ask only one follow-up question at a time when more information
+   is needed.
+8. Avoid unnecessary introductions, repeated conclusions, and filler.
+9. Use plain, natural language. Be friendly and professional.
+10. Never invent facts, statistics, prices, or financial terms.
+
+FORMATTING
+Use clean, minimal formatting.
+Do not use Markdown heading markers such as # or ##.
+Do not use bold or italic markers such as ** or *.
+Do not surround ordinary text with backticks.
+Do not use decorative separators or excessive bullet points.
+Do not write a wall of text.
+Do not force every answer into a template.
+Use simple numbered lists when steps genuinely help.
+Use short headings without Markdown symbols when appropriate.
+Do not output HTML.
+
+For a simple question, answer naturally in a few sentences.
+For a complex question, organize the response into concise sections.
+For budgeting, gather the user's information step by step and explain
+calculations clearly. Never assume income frequency or take-home pay
+when it has not been established.
 `;
 
     const history = conversation.slice(-30);
-
-    // Avoid adding the current question twice if it is already
-    // the last message in the supplied conversation.
     const lastMessage = history[history.length - 1];
 
     const alreadyIncluded =
@@ -142,17 +154,10 @@ Answer the user's latest message rather than restarting the conversation.
       });
     }
 
-    const openaiInput = [
-      {
-        role: "system",
-        content: prompt
-      },
-      ...history
-    ];
-
     const response = await openai.responses.create({
       model: process.env.OPENAI_MODEL || "gpt-4.1-mini",
-      input: openaiInput
+      instructions: systemPrompt,
+      input: history
     });
 
     const answer = response.output_text;
@@ -167,10 +172,7 @@ Answer the user's latest message rather than restarting the conversation.
     });
 
   } catch (error) {
-    console.error(
-      "LifeWise request failed:",
-      error.message
-    );
+    console.error("LifeWise request failed:", error);
 
     return res.status(500).json({
       error: "LifeWise couldn't answer right now. Please try again."
@@ -183,3 +185,5 @@ const PORT = process.env.PORT || 10000;
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`LifeWise is running on port ${PORT}`);
 });
+
+
